@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Autonomic</string>
+    <string name="spotify_api_endpoint">https://api.spotify.com/v1/</string>
+
+    <string name="activity_login_button">Get Started</string>
+    <string name="title_activity_context_summary">Contexts</string>
+    <string name="title_activity_login">Login</string>
+</resources>

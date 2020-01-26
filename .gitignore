@@ -1,0 +1,11 @@
+*.iml
+.gradle
+/local.properties
+.idea/**
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/projectFilesBackup
+/app/src/main/res/values/strings-secret.xml
+*/build
