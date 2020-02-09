@@ -2,7 +2,7 @@ package com.cjapps.autonomic.login
 
 import android.content.Context
 import com.cjapps.autonomic.R
-import com.cjapps.autonomic.authentication.AuthenticationManager
+import com.cjapps.autonomic.authentication.IAuthenticationManager
 import com.cjapps.autonomic.authentication.IAuthenticationRepository
 import com.cjapps.autonomic.network.isSuccess
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class LoginRepository @Inject constructor(
     private val applicationContext: Context,
     private val authenticationRepository: IAuthenticationRepository,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationManager: IAuthenticationManager
 ) : ILoginRepository {
 
     override fun getAuthorizationScopes(): Array<String> {

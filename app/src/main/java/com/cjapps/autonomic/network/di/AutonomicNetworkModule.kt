@@ -11,41 +11,39 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
+import javax.inject.Named
 
 /**
- * Created by cjgonz on 2019-09-20.
+ * Created by cjgonz on 2020-02-09.
  */
 @Module
-open class NetworkModule {
+open class AutonomicNetworkModule {
+    companion object {
+        private const val AUTONOMIC_RETROFIT_NAME = "autonomic_retrofit"
+    }
 
     @Provides
     @Reusable
+    @Named(AUTONOMIC_RETROFIT_NAME)
     fun provideRetrofit(applicationContext: Context): Retrofit {
-        val httpLoggingInterceptor = HttpLoggingInterceptor(
-            object: HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Timber.d(message)
-                }
-            }
-        )
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val okHttpClient = OkHttpClient.Builder()
 
         if (BuildConfig.DEBUG) {
+            val httpLoggingInterceptor = HttpLoggingInterceptor(TimberHttpLoggingInterceptor())
+            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             okHttpClient.addInterceptor(httpLoggingInterceptor)
         }
 
         return Retrofit.Builder()
             .client(okHttpClient.build())
-            .baseUrl(applicationContext.getString(R.string.spotify_api_endpoint))
+            .baseUrl(applicationContext.getString(R.string.autonomic_base_url))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     @Provides
     @Reusable
-    fun provideAutonomicService(retrofit: Retrofit): AutonomicApiService {
+    fun provideAutonomicService(@Named(AUTONOMIC_RETROFIT_NAME) retrofit: Retrofit): AutonomicApiService {
         return retrofit.create(AutonomicApiService::class.java)
     }
 }

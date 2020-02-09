@@ -2,8 +2,10 @@ package com.cjapps.autonomic.di
 
 import android.content.Context
 import com.cjapps.autonomic.AutonomicApplication
+import com.cjapps.autonomic.contextsummary.di.ContextSummaryModule
 import com.cjapps.autonomic.login.di.LoginModule
-import com.cjapps.autonomic.network.di.NetworkModule
+import com.cjapps.autonomic.network.di.AutonomicNetworkModule
+import com.cjapps.autonomic.network.di.SpotifyNetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -14,9 +16,11 @@ import javax.inject.Singleton
  */
 @Component(modules = [
     AndroidSupportInjectionModule::class,
-    LoginModule::class,
     AppModule::class,
-    NetworkModule::class
+    SpotifyNetworkModule::class,
+    AutonomicNetworkModule::class,
+    LoginModule::class,
+    ContextSummaryModule::class
 ])
 @Singleton
 interface AppComponent {
