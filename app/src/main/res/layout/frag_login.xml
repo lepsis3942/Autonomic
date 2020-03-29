@@ -5,7 +5,7 @@
     android:id="@+id/login_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="?attr/colorPrimaryDark">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,9 +15,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login_get_started_button"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/button_height"
             android:text="@string/activity_login_button"
-            app:cornerRadius="@dimen/button_corner_radius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

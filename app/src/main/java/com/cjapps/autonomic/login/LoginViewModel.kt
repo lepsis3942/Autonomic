@@ -60,6 +60,7 @@ class LoginViewModel @Inject constructor(
             }
             else -> {
                 // Most likely user cancelled auth flow
+                isLoadingLiveData.value = false
             }
         }
     }

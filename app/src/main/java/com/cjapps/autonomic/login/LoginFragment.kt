@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -45,7 +46,8 @@ class LoginFragment: DaggerFragment(), IHostActivityResultListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.frag_login, container, false)
+        val contextWrapper = ContextThemeWrapper(activity, R.style.AppTheme_DarkBackground)
+        return inflater.cloneInContext(contextWrapper).inflate(R.layout.frag_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

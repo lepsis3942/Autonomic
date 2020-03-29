@@ -3,6 +3,8 @@
     <string name="spotify_api_endpoint">https://api.spotify.com/v1/</string>
 
     <string name="activity_login_button">Get Started</string>
-    <string name="title_activity_context_summary">Contexts</string>
+    <string name="notification_channel_playback_name">Playback Initialization</string>
+    <string name="notification_playback_content">Starting music playback</string>
+    <string name="title_activity_context_summary">Autonomic</string>
     <string name="title_activity_login">Login</string>
 </resources>
