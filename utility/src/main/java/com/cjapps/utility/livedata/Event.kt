@@ -1,10 +1,10 @@
-package com.cjapps.autonomic.livedata
+package com.cjapps.utility.livedata
 
 /**
  * Created by cjgonz on 2019-09-17.
  */
 class Event<out T>(private val content: T) {
-    var hasBeenHandled = false
+    private var hasBeenHandled = false
 
     fun getContentIfNotHandled(): T? {
         return if (hasBeenHandled) {

@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.cjapps.autonomic.R
-import com.cjapps.autonomic.livedata.EventObserver
+import com.cjapps.utility.livedata.EventObserver
 import com.google.android.material.snackbar.Snackbar
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import dagger.android.support.DaggerFragment

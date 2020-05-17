@@ -3,8 +3,22 @@
     <string name="spotify_api_endpoint">https://api.spotify.com/v1/</string>
 
     <string name="activity_login_button">Get Started</string>
+
+    <string name="context_detail_context_content_desc_album_art">Album Art</string>
+    <string name="context_detail_context_content_desc_bluetooth">Bluetooth Icon</string>
+    <string name="context_detail_context_name">Name</string>
+    <string name="context_detail_context_then_play_title">then play</string>
+    <string name="context_detail_context_when_connect_title">When I connect to</string>
+
+    <string name="context_summary_create_new">Create</string>
+
+    <string name="trigger_select_bluetooth_disabled">Bluetooth Disabled, tap to enable</string>
+    <string name="trigger_select_content_desc_item_image">Device Description Image</string>
+
     <string name="notification_channel_playback_name">Playback Initialization</string>
     <string name="notification_playback_content">Starting music playback</string>
     <string name="title_activity_context_summary">Autonomic</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_context_detail">Context</string>
+    <string name="title_trigger_select">Select Trigger</string>
 </resources>

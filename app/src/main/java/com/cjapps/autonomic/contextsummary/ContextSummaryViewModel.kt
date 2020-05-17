@@ -2,20 +2,15 @@ package com.cjapps.autonomic.contextsummary
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.cjapps.autonomic.authentication.IAuthenticationManager
-import com.cjapps.autonomic.livedata.Event
-import com.cjapps.autonomic.network.SpotifyApiService
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import com.cjapps.utility.livedata.Event
 import javax.inject.Inject
 
 /**
  * Created by cjgonz on 2020-01-26.
  */
 class ContextSummaryViewModel @Inject constructor(
-    private val authenticationManager: IAuthenticationManager,
-    private val spotifyApiService: SpotifyApiService
+    private val authenticationManager: IAuthenticationManager
 ): ViewModel() {
 
     val navigationEventLiveData by lazy { MutableLiveData<Event<NavDestination>>() }
@@ -26,13 +21,11 @@ class ContextSummaryViewModel @Inject constructor(
         }
     }
 
-    fun test() {
-        viewModelScope.launch {
-            val x = spotifyApiService.getMe()
-            Timber.d(x.body().toString())
-        }
+    fun createButtonTapped() {
+        navigationEventLiveData.value = Event(ContextCreation)
     }
 }
 
 sealed class NavDestination
 object Login: NavDestination()
+object ContextCreation: NavDestination()

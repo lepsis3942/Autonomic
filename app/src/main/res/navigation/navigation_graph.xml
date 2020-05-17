@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation_graph"
+    android:label="@string/title_trigger_select"
     app:startDestination="@id/contextSummaryFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.cjapps.autonomic.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:name="com.cjapps.autonomic.login.LoginFragment" />
     <fragment
         android:id="@+id/contextSummaryFragment"
         android:name="com.cjapps.autonomic.contextsummary.ContextSummaryFragment"
-        android:label="ContextSummaryFragment" >
+        android:label="@string/title_activity_context_summary">
         <action
             android:id="@+id/action_contextSummaryFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_contextSummaryFragment_to_contextDetailFragment"
+            app:destination="@id/contextDetailFragment"
+            app:popUpTo="@id/contextSummaryFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/contextDetailFragment"
+        android:name="com.cjapps.autonomic.contextdetail.ContextDetailFragment"
+        android:label="@string/title_context_detail">
+
+        <argument
+            android:name="context_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_contextDetailFragment_to_triggerSelectionFragment"
+            app:destination="@id/triggerSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/triggerSelectionFragment"
+        android:name="com.cjapps.autonomic.trigger.TriggerSelectionFragment"
+        android:label="@string/title_trigger_select" />
 </navigation>
