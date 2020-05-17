@@ -8,4 +8,4 @@ pipelines:
             - gradle
           script:
             - export GRADLE_USER_HOME=`pwd`/.gradle
-            - ./gradlew test
+            - ./gradlew writeDummySecrets test
