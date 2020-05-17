@@ -3,11 +3,9 @@ pipelines:
     master:
       - step:
           name: Test
-          image: bitbucketpipelines/android-ci-image
+          image: javiersantos/android-ci:latest
           caches:
             - gradle
           script:
-            - chmod +x setup_licenses.sh
-            - ./setup_licenses.sh
-            - chmod +x gradlew
+            - export GRADLE_USER_HOME=`pwd`/.gradle
             - ./gradlew test
