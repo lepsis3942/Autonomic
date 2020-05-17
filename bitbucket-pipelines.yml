@@ -7,5 +7,6 @@ pipelines:
           caches:
             - gradle
           script:
+            - yes | sdkmanager --licenses
             - chmod +x gradlew
             - ./gradlew test
