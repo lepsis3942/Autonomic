@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cjapps.autonomic.R
 import com.cjapps.autonomic.databinding.TriggerSelectListItemBinding
-import com.cjapps.autonomic.trigger.model.TentativeBluetoothSelection
-import com.cjapps.autonomic.trigger.model.TriggerDeviceType
+import com.cjapps.domain.Trigger
+import com.cjapps.domain.TriggerDeviceType
 
 class TriggerSelectAdapter(
-    private val itemSelected: (TentativeBluetoothSelection) -> Unit
-): ListAdapter<TentativeBluetoothSelection, TriggerSelectAdapter.TriggerSelectDevice>(DiffCallback) {
+    private val itemSelected: (Trigger) -> Unit
+): ListAdapter<Trigger, TriggerSelectAdapter.TriggerSelectDevice>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TriggerSelectDevice {
         val binding = TriggerSelectListItemBinding.inflate(
@@ -28,17 +28,17 @@ class TriggerSelectAdapter(
         }
     }
 
-    private object DiffCallback: DiffUtil.ItemCallback<TentativeBluetoothSelection>() {
+    private object DiffCallback: DiffUtil.ItemCallback<Trigger>() {
         override fun areItemsTheSame(
-            oldItem: TentativeBluetoothSelection,
-            newItem: TentativeBluetoothSelection
+            oldItem: Trigger,
+            newItem: Trigger
         ): Boolean {
             return oldItem.macAddress == newItem.macAddress
         }
 
         override fun areContentsTheSame(
-            oldItem: TentativeBluetoothSelection,
-            newItem: TentativeBluetoothSelection
+            oldItem: Trigger,
+            newItem: Trigger
         ): Boolean {
             // Object equals is sufficient here
             return oldItem == newItem
@@ -48,10 +48,10 @@ class TriggerSelectAdapter(
 
     class TriggerSelectDevice(
         private val binding: TriggerSelectListItemBinding,
-        private val itemSelected: (TentativeBluetoothSelection) -> Unit
+        private val itemSelected: (Trigger) -> Unit
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(device: TentativeBluetoothSelection) {
+        fun bind(device: Trigger) {
             binding.triggerSelectListImage.setImageResource(imageIdForDeviceType(device.deviceType))
             binding.triggerSelectListName.text = device.name
             binding.root.setOnClickListener { itemSelected(device) }

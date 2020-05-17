@@ -1,175 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="20dp">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/context_detail_when_connect"
-        style="@style/LargeActionText"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/context_detail_context_when_connect_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
-        app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        android:paddingTop="20dp">
 
-    <ImageView
-        android:id="@+id/context_detail_trigger_hero_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/ic_bluetooth_black"
-        app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/context_detail_when_connect"
-        android:contentDescription="@string/context_detail_context_content_desc_bluetooth" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/context_detail_when_connect"
+            style="@style/LargeActionText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/context_detail_when_connect_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+            app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/context_detail_trigger_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:lines="1"
-        android:text="@string/context_detail_context_then_play_title"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toBottomOf="@+id/context_detail_trigger_hero_image"
-        app:layout_constraintEnd_toStartOf="@id/context_detail_edit_trigger"
-        app:layout_constraintStart_toEndOf="@+id/context_detail_trigger_hero_image"
-        app:layout_constraintTop_toTopOf="@+id/context_detail_trigger_hero_image" />
+        <ImageView
+            android:id="@+id/context_detail_trigger_hero_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_bluetooth_black"
+            app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/context_detail_when_connect"
+            android:contentDescription="@string/context_detail_content_desc_bluetooth" />
 
-    <ImageView
-        android:id="@+id/context_detail_edit_trigger"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:padding="10dp"
-        android:src="@drawable/ic_edit_black"
-        app:layout_constraintBottom_toBottomOf="@+id/context_detail_trigger_name"
-        app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
-        app:layout_constraintTop_toTopOf="@+id/context_detail_trigger_name"
-        android:contentDescription="@string/context_detail_context_content_desc_album_art"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/context_detail_trigger_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:lines="1"
+            tools:text="Car Bluetooth"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintBottom_toBottomOf="@+id/context_detail_trigger_hero_image"
+            app:layout_constraintEnd_toStartOf="@id/context_detail_edit_trigger"
+            app:layout_constraintStart_toEndOf="@+id/context_detail_trigger_hero_image"
+            app:layout_constraintTop_toTopOf="@+id/context_detail_trigger_hero_image" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/context_detail_trigger_choose_button"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_height"
-        android:text="Choose"
-        android:visibility="visible"
-        app:icon="@drawable/ic_arrow_forward_black"
-        app:iconGravity="textEnd"
-        app:layout_constraintBottom_toBottomOf="@+id/context_detail_trigger_hero_image"
-        app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
-        app:layout_constraintStart_toEndOf="@+id/context_detail_trigger_hero_image"
-        app:layout_constraintTop_toTopOf="@+id/context_detail_trigger_hero_image"
-        app:layout_constraintWidth_percent=".6" />
+        <ImageView
+            android:id="@+id/context_detail_edit_trigger"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_edit_black"
+            app:layout_constraintBottom_toBottomOf="@+id/context_detail_trigger_name"
+            app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+            app:layout_constraintTop_toTopOf="@+id/context_detail_trigger_name"
+            android:contentDescription="@string/context_detail_content_desc_album_art"/>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/context_detail_then_play"
-        style="@style/LargeActionText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="then play"
-        app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
-        app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/context_detail_trigger_hero_image" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/context_detail_trigger_choose_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/context_detail_select_button"
+            android:visibility="visible"
+            app:icon="@drawable/ic_arrow_forward_black"
+            app:iconGravity="textEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/context_detail_trigger_hero_image"
+            app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+            app:layout_constraintStart_toEndOf="@+id/context_detail_trigger_hero_image"
+            app:layout_constraintTop_toTopOf="@+id/context_detail_trigger_hero_image"
+            app:layout_constraintWidth_percent=".6" />
 
-    <ImageView
-        android:id="@+id/context_detail_music_art"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/ic_album_black"
-        app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/context_detail_then_play" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/context_detail_then_play"
+            style="@style/LargeActionText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/context_detail_then_play_title"
+            app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+            app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/context_detail_trigger_hero_image" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/context_detail_music_choose_button"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_height"
-        android:text="Choose"
-        android:visibility="visible"
-        app:icon="@drawable/ic_arrow_forward_black"
-        app:iconGravity="textEnd"
-        app:layout_constraintBottom_toBottomOf="@+id/context_detail_music_art"
-        app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
-        app:layout_constraintStart_toEndOf="@+id/context_detail_trigger_hero_image"
-        app:layout_constraintTop_toTopOf="@+id/context_detail_music_art"
-        app:layout_constraintWidth_percent=".6" />
+        <ImageView
+            android:id="@+id/context_detail_music_art"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_album_black"
+            android:contentDescription="@string/context_detail_content_desc_album_art"
+            app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/context_detail_then_play" />
 
-    <!--    <com.google.android.material.textfield.TextInputLayout-->
-    <!--        android:id="@+id/context_detail_name_input_layout"-->
-    <!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintEnd_toEndOf="@id/context_detail_end_guideline"-->
-    <!--        app:layout_constraintStart_toStartOf="@id/context_detail_start_guideline"-->
-    <!--        app:layout_constraintTop_toTopOf="parent">-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/context_detail_music_choose_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/context_detail_select_button"
+            android:visibility="visible"
+            app:icon="@drawable/ic_arrow_forward_black"
+            app:iconGravity="textEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/context_detail_music_art"
+            app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+            app:layout_constraintStart_toEndOf="@+id/context_detail_trigger_hero_image"
+            app:layout_constraintTop_toTopOf="@+id/context_detail_music_art"
+            app:layout_constraintWidth_percent=".6" />
 
-    <!--        <com.google.android.material.textfield.TextInputEditText-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:hint="@string/context_detail_context_name" />-->
-    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/context_detail_start_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
 
-    <!--    <com.google.android.material.card.MaterialCardView-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="140dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        app:cardElevation="@dimen/card_height"-->
-    <!--        app:layout_constraintEnd_toEndOf="@id/context_detail_end_guideline"-->
-    <!--        app:layout_constraintStart_toStartOf="@id/context_detail_start_guideline"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/context_detail_name_input_layout">-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/context_detail_end_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
 
-    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:padding="8dp">-->
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/context_detail_edit_trigger_group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:constraint_referenced_ids="context_detail_trigger_name,context_detail_edit_trigger" />
 
-    <!--            <ImageView-->
-    <!--                android:id="@+id/imageView"-->
-    <!--                android:layout_width="0dp"-->
-    <!--                android:layout_height="0dp"-->
-    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                app:layout_constraintDimensionRatio="1"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--            <TextView-->
-    <!--                android:layout_width="0dp"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="8dp"-->
-    <!--                android:textAlignment="center"-->
-    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintStart_toEndOf="@+id/imageView"-->
-    <!--                app:layout_constraintTop_toTopOf="parent"-->
-    <!--                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"-->
-    <!--                tools:text="Playlist Name Here" />-->
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-    <!--    </com.google.android.material.card.MaterialCardView>-->
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/context_detail_start_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/context_detail_end_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/context_detail_edit_trigger_group"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:constraint_referenced_ids="context_detail_trigger_name,context_detail_edit_trigger" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

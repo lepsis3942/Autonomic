@@ -44,6 +44,20 @@ class AutonomicDatabaseInteractorTest {
     }
 
     @Test
+    fun testInsertMultipleContexts() = runBlocking {
+        val context = getDomainContext()
+
+        for (i in 0..5) {
+            interactor.insertContext(context)
+        }
+
+        val contexts = interactor.getAllContexts()
+
+        assertEquals(6, contexts.size)
+        assertEquals(6, interactor.getNumberPlaylists())
+    }
+
+    @Test
     fun testDeleteContext() = runBlocking {
         val context = getDomainContext()
 

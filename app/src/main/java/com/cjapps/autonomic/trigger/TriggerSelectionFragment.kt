@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cjapps.autonomic.R
 import com.cjapps.autonomic.databinding.FragTriggerSelectBinding
-import com.cjapps.autonomic.trigger.model.TentativeBluetoothSelection
+import com.cjapps.domain.Trigger
 import com.cjapps.utility.extensions.saveValueToNavBackStack
 import com.cjapps.utility.viewbinding.viewBindingLifecycle
 import dagger.android.support.DaggerFragment
@@ -85,11 +85,11 @@ class TriggerSelectionFragment: DaggerFragment() {
         }
     }
 
-    private fun triggerSelected(tentativeBluetoothSelection: TentativeBluetoothSelection) {
+    private fun triggerSelected(tentativeBluetoothSelection: Trigger) {
         viewModel.executeAction(TriggerSelectionAction.TriggerSelected(tentativeBluetoothSelection))
     }
 
-    private fun moveToDevicesKnownState(knownDevices: List<TentativeBluetoothSelection>) {
+    private fun moveToDevicesKnownState(knownDevices: List<Trigger>) {
         viewBinding.triggerSelectCallToActionText.visibility = View.GONE
 
         viewBinding.triggerSelectDeviceList.visibility = View.VISIBLE

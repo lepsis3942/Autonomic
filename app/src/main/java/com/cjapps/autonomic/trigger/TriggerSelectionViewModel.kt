@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cjapps.autonomic.trigger.model.TentativeBluetoothSelection
+import com.cjapps.domain.Trigger
 import javax.inject.Inject
 
 class TriggerSelectionViewModel @Inject constructor(
@@ -42,13 +42,13 @@ class TriggerSelectionViewModel @Inject constructor(
 sealed class TriggerSelectionAction {
     object Init: TriggerSelectionAction()
     data class BroadcastReceivedAction(val intent: Intent?): TriggerSelectionAction()
-    data class TriggerSelected(val selectedTrigger: TentativeBluetoothSelection): TriggerSelectionAction()
+    data class TriggerSelected(val selectedTrigger: Trigger): TriggerSelectionAction()
 }
 
 sealed class BluetoothInfo {
     object StateDisabled: BluetoothInfo()
-    data class KnownDevices(val deviceList: List<TentativeBluetoothSelection>): BluetoothInfo()
-    data class TriggerSelected(val selectedTrigger: TentativeBluetoothSelection): BluetoothInfo()
+    data class KnownDevices(val deviceList: List<Trigger>): BluetoothInfo()
+    data class TriggerSelected(val selectedTrigger: Trigger): BluetoothInfo()
 }
 
 data class TriggerSelectionUiState(val bluetoothInfo: LiveData<BluetoothInfo>)

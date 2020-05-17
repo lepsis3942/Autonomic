@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.cjapps.autonomic.R
 import com.cjapps.autonomic.databinding.FragContextDetailBinding
 import com.cjapps.autonomic.trigger.TriggerSelectionFragment
-import com.cjapps.autonomic.trigger.model.TentativeBluetoothSelection
+import com.cjapps.domain.Trigger
 import com.cjapps.utility.extensions.observeValueFromNavBackStack
 import com.cjapps.utility.livedata.EventObserver
 import com.cjapps.utility.viewbinding.viewBindingLifecycle
@@ -39,8 +39,17 @@ class ContextDetailFragment: DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewBinding.contextDetailTriggerChooseButton.setOnClickListener {
+        val executeChooseTrigger = fun() {
             viewModel.executeAction(ContextDetailAction.ChooseTrigger)
+        }
+        viewBinding.contextDetailTriggerChooseButton.setOnClickListener {
+            executeChooseTrigger()
+        }
+        viewBinding.contextDetailEditTrigger.setOnClickListener {
+            executeChooseTrigger()
+        }
+        viewBinding.contextDetailTriggerName.setOnClickListener {
+            executeChooseTrigger()
         }
 
         viewModel.viewState.apply {
@@ -52,7 +61,7 @@ class ContextDetailFragment: DaggerFragment() {
             })
         }
 
-        observeValueFromNavBackStack(TriggerSelectionFragment.KEY_SELECTED_TENTATIVE_TRIGGER, Observer<TentativeBluetoothSelection> { selection ->
+        observeValueFromNavBackStack(TriggerSelectionFragment.KEY_SELECTED_TENTATIVE_TRIGGER, Observer<Trigger> { selection ->
             if (selection == null) return@Observer
             viewModel.executeAction(ContextDetailAction.TriggerUpdated(selection))
         })
@@ -65,6 +74,11 @@ class ContextDetailFragment: DaggerFragment() {
             is TriggerUiState.Unset -> {
                 viewBinding.contextDetailEditTriggerGroup.visibility = View.GONE
                 viewBinding.contextDetailTriggerChooseButton.visibility = View.VISIBLE
+            }
+            is TriggerUiState.CanEdit -> {
+                viewBinding.contextDetailEditTriggerGroup.visibility = View.VISIBLE
+                viewBinding.contextDetailTriggerChooseButton.visibility = View.GONE
+                viewBinding.contextDetailTriggerName.text = uiState.triggerName
             }
         }
     }

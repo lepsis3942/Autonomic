@@ -4,11 +4,12 @@
 
     <string name="activity_login_button">Get Started</string>
 
-    <string name="context_detail_context_content_desc_album_art">Album Art</string>
-    <string name="context_detail_context_content_desc_bluetooth">Bluetooth Icon</string>
+    <string name="context_detail_content_desc_album_art">Album Art</string>
+    <string name="context_detail_content_desc_bluetooth">Bluetooth Icon</string>
     <string name="context_detail_context_name">Name</string>
-    <string name="context_detail_context_then_play_title">then play</string>
-    <string name="context_detail_context_when_connect_title">When I connect to</string>
+    <string name="context_detail_then_play_title">then play</string>
+    <string name="context_detail_when_connect_title">When I connect to</string>
+    <string name="context_detail_select_button">Choose</string>
 
     <string name="context_summary_create_new">Create</string>
 

@@ -6,8 +6,8 @@ import android.bluetooth.BluetoothClass.Device.Major
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.pm.PackageManager
-import com.cjapps.autonomic.trigger.model.TentativeBluetoothSelection
-import com.cjapps.autonomic.trigger.model.TriggerDeviceType
+import com.cjapps.domain.Trigger
+import com.cjapps.domain.TriggerDeviceType
 import dagger.Reusable
 import javax.inject.Inject
 
@@ -27,13 +27,13 @@ class BluetoothRepository @Inject constructor(
         return adapter.isEnabled
     }
 
-    fun getBluetoothDevices(): List<TentativeBluetoothSelection> {
+    fun getBluetoothDevices(): List<Trigger> {
         val adapter = BluetoothAdapter.getDefaultAdapter()
         return adapter.bondedDevices.map {
-            TentativeBluetoothSelection(
-                it.name,
-                it.address,
-                it.toTriggerDeviceType()
+            Trigger(
+                name = it.name,
+                deviceType = it.toTriggerDeviceType(),
+                macAddress = it.address
             )
         }
     }
