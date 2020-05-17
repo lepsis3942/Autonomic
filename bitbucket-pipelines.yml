@@ -7,7 +7,7 @@ pipelines:
           caches:
             - gradle
           script:
-            - echo $ANDROID_HOME
-            - yes | sdkmanager --licenses
+            - ls -la $ANDROID_HOME
+            - yes | $ANDROID_HOME/sdkmanager --licenses
             - chmod +x gradlew
             - ./gradlew test
