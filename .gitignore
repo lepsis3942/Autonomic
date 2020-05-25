@@ -7,5 +7,5 @@
 /captures
 .externalNativeBuild
 /projectFilesBackup
-/app/src/main/res/values/strings-secret.xml
+**/strings-secret.xml
 */build

@@ -1,13 +1,13 @@
 package com.cjapps.autonomic.di
 
-import com.cjapps.autonomic.authentication.AuthenticationManager
-import com.cjapps.autonomic.authentication.AuthenticationRepository
-import com.cjapps.autonomic.authentication.IAuthenticationManager
-import com.cjapps.autonomic.authentication.IAuthenticationRepository
-import com.cjapps.autonomic.dataprovider.IDataProvider
-import com.cjapps.autonomic.dataprovider.LocalDataProvider
 import com.cjapps.autonomic.serialization.ISerializer
 import com.cjapps.autonomic.serialization.MoshiSerializer
+import com.cjapps.network.authentication.AuthenticationManager
+import com.cjapps.network.authentication.AuthenticationRepository
+import com.cjapps.network.authentication.IAuthenticationManager
+import com.cjapps.network.authentication.IAuthenticationRepository
+import com.cjapps.persistence.keyvalue.IKeyValueDataProvider
+import com.cjapps.persistence.keyvalue.LocalKeyValueDataProvider
 import dagger.Binds
 import dagger.Module
 
@@ -23,7 +23,7 @@ abstract class AppModule {
     abstract fun provideAuthenticationManager(authenticationManager: AuthenticationManager): IAuthenticationManager
 
     @Binds
-    abstract fun provideDataProvider(localDataProvider: LocalDataProvider): IDataProvider
+    abstract fun provideDataProvider(localDataProvider: LocalKeyValueDataProvider): IKeyValueDataProvider
 
     @Binds
     abstract fun provideSerializer(serializer: MoshiSerializer): ISerializer

@@ -6,9 +6,9 @@ import com.cjapps.autonomic.bridge.di.BridgeModule
 import com.cjapps.autonomic.contextdetail.di.ContextDetailModule
 import com.cjapps.autonomic.contextsummary.di.ContextSummaryModule
 import com.cjapps.autonomic.login.di.LoginModule
-import com.cjapps.autonomic.network.di.AutonomicNetworkModule
-import com.cjapps.autonomic.network.di.SpotifyNetworkModule
 import com.cjapps.autonomic.trigger.di.TriggerSelectionModule
+import com.cjapps.network.di.AutonomicNetworkModule
+import com.cjapps.network.di.SpotifyNetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule

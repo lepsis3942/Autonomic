@@ -1,3 +1,4 @@
 include ':app', ':spotify-app-remote', ':spotify-auth', ':utility'
 include ':persistence'
 include ':domain'
+include ':network'

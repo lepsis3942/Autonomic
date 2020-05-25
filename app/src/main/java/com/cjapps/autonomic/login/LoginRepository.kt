@@ -2,9 +2,10 @@ package com.cjapps.autonomic.login
 
 import android.content.Context
 import com.cjapps.autonomic.R
-import com.cjapps.autonomic.authentication.IAuthenticationManager
-import com.cjapps.autonomic.authentication.IAuthenticationRepository
-import com.cjapps.autonomic.network.isSuccess
+import com.cjapps.network.AuthTokenData
+import com.cjapps.network.authentication.IAuthenticationManager
+import com.cjapps.network.authentication.IAuthenticationRepository
+import com.cjapps.network.isSuccess
 import javax.inject.Inject
 
 /**
@@ -37,7 +38,7 @@ class LoginRepository @Inject constructor(
         val accessTokenInfo = authenticationRepository.getTokenFromCode(code, redirectUrl)
         return if (accessTokenInfo.isSuccess() && accessTokenInfo.data != null) {
             // Now the app can manage the access token and refresh it as needed from here on out
-            authenticationManager.setAuthInfo(accessTokenInfo.data)
+            authenticationManager.setAuthInfo(accessTokenInfo.data as AuthTokenData)
             true
         } else {
             false

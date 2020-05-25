@@ -2,7 +2,7 @@ package com.cjapps.autonomic.contextsummary
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cjapps.autonomic.authentication.IAuthenticationManager
+import com.cjapps.network.authentication.IAuthenticationManager
 import com.cjapps.utility.livedata.Event
 import javax.inject.Inject
 
