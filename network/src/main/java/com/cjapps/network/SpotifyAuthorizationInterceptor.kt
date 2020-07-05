@@ -1,10 +1,11 @@
 package com.cjapps.network
 
-import com.cjapps.network.authentication.AuthCredentials
+import com.cjapps.network.authentication.AuthenticationCredentials
 import com.cjapps.network.authentication.IAuthenticationManager
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
+import timber.log.Timber
 import java.io.IOException
 
 /**
@@ -12,20 +13,25 @@ import java.io.IOException
  */
 internal class SpotifyAuthorizationInterceptor constructor(
     private val authenticationManager: IAuthenticationManager
-): Interceptor {
+) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
         synchronized(this) {
-            var authCredentials: AuthCredentials? = null
+            var authenticationCredentials: AuthenticationCredentials?
             runBlocking {
-                authCredentials = authenticationManager.getAuthInfo()
+                authenticationCredentials = try {
+                    authenticationManager.getAuthInfo()
+                } catch (ex: Exception) {
+                    Timber.e(ex)
+                    AuthenticationCredentials("empty", "empty", -1)
+                }
             }
 
             val authenticatedRequest = originalRequest.newBuilder()
-                .addHeader("Authorization", "Bearer ${authCredentials?.accessToken}")
+                .addHeader("Authorization", "Bearer ${authenticationCredentials?.accessToken}")
 
             return chain.proceed(authenticatedRequest.build())
         }

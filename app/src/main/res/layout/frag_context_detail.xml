@@ -108,6 +108,32 @@
             app:layout_constraintTop_toTopOf="@+id/context_detail_music_art"
             app:layout_constraintWidth_percent=".6" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/context_detail_music_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:lines="1"
+            tools:text="Queen - Greatest Hits"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintBottom_toBottomOf="@+id/context_detail_music_art"
+            app:layout_constraintEnd_toStartOf="@id/context_detail_edit_music"
+            app:layout_constraintStart_toEndOf="@+id/context_detail_music_art"
+            app:layout_constraintTop_toTopOf="@+id/context_detail_music_art" />
+
+        <ImageView
+            android:id="@+id/context_detail_edit_music"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_edit_black"
+            app:layout_constraintBottom_toBottomOf="@+id/context_detail_music_art"
+            app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+            app:layout_constraintTop_toTopOf="@+id/context_detail_music_art"
+            android:contentDescription="@string/context_detail_content_desc_album_art"/>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/context_detail_start_guideline"
             android:layout_width="wrap_content"
@@ -128,6 +154,13 @@
             android:layout_height="0dp"
             android:visibility="gone"
             app:constraint_referenced_ids="context_detail_trigger_name,context_detail_edit_trigger" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/context_detail_edit_music_group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:constraint_referenced_ids="context_detail_music_name,context_detail_edit_music" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

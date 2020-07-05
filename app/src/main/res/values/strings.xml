@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Autonomic</string>
     <string name="spotify_api_endpoint">https://api.spotify.com/v1/</string>
+    <string name="separator">\u2022</string>
 
     <string name="activity_login_button">Get Started</string>
 
@@ -13,6 +14,8 @@
 
     <string name="context_summary_create_new">Create</string>
 
+    <string name="playback_select_content_desc_album_art">Album Art</string>
+
     <string name="trigger_select_bluetooth_disabled">Bluetooth Disabled, tap to enable</string>
     <string name="trigger_select_content_desc_item_image">Device Description Image</string>
 
@@ -21,5 +24,6 @@
     <string name="title_activity_context_summary">Autonomic</string>
     <string name="title_activity_login">Login</string>
     <string name="title_context_detail">Context</string>
+    <string name="title_playback_select">Select Playlist</string>
     <string name="title_trigger_select">Select Trigger</string>
 </resources>

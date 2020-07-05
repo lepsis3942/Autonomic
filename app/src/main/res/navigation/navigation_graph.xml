@@ -31,9 +31,16 @@
         <action
             android:id="@+id/action_contextDetailFragment_to_triggerSelectionFragment"
             app:destination="@id/triggerSelectionFragment" />
+        <action
+            android:id="@+id/action_contextDetailFragment_to_playbackSelectionFragment"
+            app:destination="@id/playbackSelectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/triggerSelectionFragment"
         android:name="com.cjapps.autonomic.trigger.TriggerSelectionFragment"
         android:label="@string/title_trigger_select" />
+    <fragment
+        android:id="@+id/playbackSelectionFragment"
+        android:name="com.cjapps.autonomic.playback.PlaybackSelectionFragment"
+        android:label="@string/title_playback_select" />
 </navigation>

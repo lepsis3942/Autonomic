@@ -1,14 +1,14 @@
 package com.cjapps.network
 
-import com.cjapps.network.model.UserPrivate
+import com.cjapps.network.model.Pager
+import com.cjapps.network.model.PlaylistSimple
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.QueryMap
 
-/**
- * Created by cjgonz on 2020-01-26.
- */
 interface SpotifyApiService {
 
-    @GET("me")
-    suspend fun getMe(): Response<UserPrivate>
+    @JvmSuppressWildcards
+    @GET("me/playlists")
+    suspend fun getMyPlaylists(@QueryMap optionsMap: Map<String, Any>): Response<Pager<PlaylistSimple>>
 }

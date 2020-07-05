@@ -12,13 +12,14 @@ import com.cjapps.domain.TriggerDeviceType
 
 class TriggerSelectAdapter(
     private val itemSelected: (Trigger) -> Unit
-): ListAdapter<Trigger, TriggerSelectAdapter.TriggerSelectDevice>(DiffCallback) {
+) : ListAdapter<Trigger, TriggerSelectAdapter.TriggerSelectDevice>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TriggerSelectDevice {
         val binding = TriggerSelectListItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
-            false)
+            false
+        )
         return TriggerSelectDevice(binding, itemSelected)
     }
 
@@ -28,7 +29,7 @@ class TriggerSelectAdapter(
         }
     }
 
-    private object DiffCallback: DiffUtil.ItemCallback<Trigger>() {
+    private object DiffCallback : DiffUtil.ItemCallback<Trigger>() {
         override fun areItemsTheSame(
             oldItem: Trigger,
             newItem: Trigger
@@ -49,7 +50,7 @@ class TriggerSelectAdapter(
     class TriggerSelectDevice(
         private val binding: TriggerSelectListItemBinding,
         private val itemSelected: (Trigger) -> Unit
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(device: Trigger) {
             binding.triggerSelectListImage.setImageResource(imageIdForDeviceType(device.deviceType))

@@ -5,7 +5,7 @@ import retrofit2.Response
 /**
  * Created by cjgonz on 2019-09-28.
  */
-fun <K> Response<K>.toResource(): Resource<K> {
+fun <K> Response<K>.toResource() : Resource<K> {
     return if (this.isSuccessful) {
         Resource.success(this.body())
     } else {
@@ -19,6 +19,10 @@ fun <K> Response<K>.toResource(): Resource<K> {
     }
 }
 
-fun <K> Resource<K>.isSuccess(): Boolean {
+fun <K> Resource<K>.isSuccess() : Boolean {
     return this.status == Status.SUCCESS
+}
+
+fun <K> Response<K>.isSuccess() : Boolean {
+    return this.isSuccessful
 }

@@ -12,9 +12,9 @@ interface AutonomicApiService {
     @GET("authorize")
     suspend fun getSpotifyAccessTokenFromCode(
         @Query("code") code: String,
-        @Query("redirect_uri") redirectUri: String): Response<AuthTokenData>
+        @Query("redirect_uri") redirectUri: String) : Response<AuthTokenData>
 
     @GET("refresh_token")
     suspend fun refreshSpotifyToken(
-        @Query("refresh_token") refreshToken: String): Response<AuthTokenData>
+        @Query("refresh_token") refreshToken: String) : Response<AuthTokenData>
 }

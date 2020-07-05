@@ -1,20 +1,24 @@
 package com.cjapps.autonomic.bridge
 
 import android.content.Context
+import com.cjapps.utility.coroutines.ICoroutineDispatcherProvider
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class SpotifyConnectionInitiator(private val context: Context, private val connectionParams: ConnectionParams) {
+class SpotifyConnectionInitiator(
+    private val context: Context,
+    private val connectionParams: ConnectionParams,
+    private val dispatchers: ICoroutineDispatcherProvider
+) {
 
     suspend fun connect(): ConnectionResult {
-        return withContext(Dispatchers.Main) {
+        return withContext(dispatchers.Main) {
             suspendCoroutine { cont: Continuation<ConnectionResult> ->
                 SpotifyAppRemote.connect(
                     context,

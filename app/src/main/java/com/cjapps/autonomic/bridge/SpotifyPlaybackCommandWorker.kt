@@ -14,6 +14,7 @@ import androidx.work.WorkerParameters
 import com.cjapps.autonomic.R
 import com.cjapps.autonomic.login.ILoginRepository
 import com.cjapps.autonomic.serialization.ISerializer
+import com.cjapps.utility.coroutines.ICoroutineDispatcherProvider
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.protocol.client.CallResult
@@ -45,6 +46,7 @@ class SpotifyPlaybackCommandWorker @Inject constructor (
 
     @Inject lateinit var loginRepository: ILoginRepository
     @Inject lateinit var serializer: ISerializer
+    @Inject lateinit var dispatchers: ICoroutineDispatcherProvider
 
     init {
         val injector = context.applicationContext as HasAndroidInjector
@@ -64,7 +66,7 @@ class SpotifyPlaybackCommandWorker @Inject constructor (
                 .showAuthView(false)
                 .setRedirectUri(loginRepository.getRedirectUri())
                 .build()
-            val connectionInitiator = SpotifyConnectionInitiator(context, params)
+            val connectionInitiator = SpotifyConnectionInitiator(context, params, dispatchers)
 
             when (val result = connectionInitiator.connect()) {
                 is SpotifyConnectionInitiator.ConnectionResult.ConnectSuccess -> {
