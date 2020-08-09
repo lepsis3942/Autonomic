@@ -1,9 +1,9 @@
 package com.cjapps.network.authentication
 
 import com.cjapps.network.AuthTokenData
-import com.cjapps.network.Resource
 import com.cjapps.network.authentication.AuthenticationRepository.Companion.EMPTY_EXPIRES_IN
 import com.cjapps.network.isSuccess
+import com.cjapps.utility.Resource
 import com.cjapps.utility.coroutines.ICoroutineDispatcherProvider
 import dagger.Reusable
 import kotlinx.coroutines.delay
@@ -51,8 +51,9 @@ import javax.inject.Inject
             } catch (e: Exception) {
                 Resource.error(e.message ?: "", null)
             }
-            if (result.isSuccess() && result.data != null) {
-                val newAuthenticationCredentials = result.data.toAuthCredentials()
+            val resultData = result.data
+            if (result.isSuccess() && resultData != null) {
+                val newAuthenticationCredentials = resultData.toAuthCredentials()
                 updateAuthenticationCredentials(newAuthenticationCredentials)
                 return@tryGetRefreshToken newAuthenticationCredentials
             }

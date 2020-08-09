@@ -1,7 +1,7 @@
 package com.cjapps.network.authentication
 
 import com.cjapps.network.AuthTokenData
-import com.cjapps.network.Resource
+import com.cjapps.utility.Resource
 
 interface IAuthenticationRepository {
     suspend fun getTokenFromCode(code: String, redirectUrl: String) : Resource<AuthTokenData>

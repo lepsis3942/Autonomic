@@ -32,6 +32,7 @@ class ContextDetailViewModel @Inject constructor(
             is ContextDetailAction.ChooseTrigger -> navEvent.value = Event(NavEvent.SetTrigger)
             is ContextDetailAction.TriggerUpdated -> handleTriggerUpdate(action.newTrigger)
             is ContextDetailAction.PlaybackUpdated -> handlePlaybackUpdated(action.playlist)
+            is ContextDetailAction.Save -> handleSave()
         }
     }
 
@@ -64,6 +65,10 @@ class ContextDetailViewModel @Inject constructor(
         currentlySelectedPlayback = playlist
         currentlySelectedPlayback?.let { playbackUiState.value = PlaybackUiState.CanEdit(it.name, it.images?.firstOrNull()?.url) }
     }
+
+    private fun handleSave() {
+        TODO("Ensure trigger not duplicated in DB, persist settings")
+    }
 }
 
 sealed class ContextDetailAction {
@@ -72,6 +77,7 @@ sealed class ContextDetailAction {
     object ChooseTrigger : ContextDetailAction()
     data class TriggerUpdated(val newTrigger: Trigger) : ContextDetailAction()
     data class PlaybackUpdated(val playlist: PlaylistSimple) : ContextDetailAction()
+    object Save : ContextDetailAction()
 }
 
 data class UiState(

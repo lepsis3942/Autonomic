@@ -1,5 +1,7 @@
 package com.cjapps.network
 
+import com.cjapps.utility.Resource
+import com.cjapps.utility.Status
 import retrofit2.Response
 
 /**

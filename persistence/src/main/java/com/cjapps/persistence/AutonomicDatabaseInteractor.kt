@@ -2,6 +2,7 @@ package com.cjapps.persistence
 
 import android.content.Context
 import com.cjapps.domain.PlaybackContext
+import com.cjapps.domain.Trigger
 import com.cjapps.persistence.mapper.toDomain
 import com.cjapps.persistence.mapper.toEntity
 import javax.inject.Inject
@@ -29,6 +30,10 @@ class AutonomicDatabaseInteractor @Inject constructor(applicationContext: Contex
 
     suspend fun updateContext(playbackContext: PlaybackContext) {
         db.contextDao().updateFullContext(playbackContext.toEntity())
+    }
+
+    suspend fun getAllTriggers(): List<Trigger> {
+        return db.triggerDao().getAllTriggers().map { it.toDomain() }
     }
 
     internal suspend fun getNumberPlaylists(): Int {

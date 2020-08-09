@@ -2,9 +2,9 @@ package com.cjapps.network.authentication
 
 import com.cjapps.network.AuthTokenData
 import com.cjapps.network.AutonomicApiService
-import com.cjapps.network.Resource
 import com.cjapps.network.toResource
 import com.cjapps.persistence.keyvalue.IKeyValueDataProvider
+import com.cjapps.utility.Resource
 import javax.inject.Inject
 
 /**

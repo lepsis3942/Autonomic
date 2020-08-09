@@ -56,6 +56,9 @@ class ContextDetailFragment : DaggerFragment() {
         viewBinding.contextDetailMusicChooseButton.setOnClickListener { executeChooseMusic() }
         viewBinding.contextDetailMusicName.setOnClickListener { executeChooseMusic() }
         viewBinding.contextDetailEditMusic.setOnClickListener { executeChooseMusic() }
+        viewBinding.contextDetailSaveButton.setOnClickListener {
+            viewModel.executeAction(ContextDetailAction.Save)
+        }
 
         viewModel.viewState.apply {
             playbackUiState.observe(viewLifecycleOwner, Observer {

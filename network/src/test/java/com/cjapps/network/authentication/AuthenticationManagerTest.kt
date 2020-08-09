@@ -1,8 +1,8 @@
 package com.cjapps.network.authentication
 
 import com.cjapps.network.AuthTokenData
-import com.cjapps.network.Resource
 import com.cjapps.network.authentication.AuthenticationManager.Companion.EXPIRY_TIME_BUFFER
+import com.cjapps.utility.Resource
 import com.cjapps.utility.coroutines.testing.TestCoroutineDispatcherProvider
 import com.cjapps.utility.coroutines.testing.TestCoroutineRule
 import io.mockk.*

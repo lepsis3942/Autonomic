@@ -1,9 +1,9 @@
 package com.cjapps.autonomic.playback
 
-import com.cjapps.network.Resource
 import com.cjapps.network.SpotifyDataSource
 import com.cjapps.network.model.Pager
 import com.cjapps.network.model.PlaylistSimple
+import com.cjapps.utility.Resource
 import dagger.Reusable
 import javax.inject.Inject
 

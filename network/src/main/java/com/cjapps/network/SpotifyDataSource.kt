@@ -2,6 +2,7 @@ package com.cjapps.network
 
 import com.cjapps.network.model.Pager
 import com.cjapps.network.model.PlaylistSimple
+import com.cjapps.utility.Resource
 import javax.inject.Inject
 
 class SpotifyDataSource @Inject constructor(
