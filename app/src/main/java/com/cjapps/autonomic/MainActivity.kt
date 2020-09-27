@@ -10,9 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.cjapps.autonomic.login.IHostActivityResultListener
 
-/**
- * Created by cjgonz on 2019-12-30.
- */
 class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

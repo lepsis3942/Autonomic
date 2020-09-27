@@ -105,7 +105,8 @@ class AutonomicDatabaseInteractorTest {
             snapshotId = "snap",
             user = SpotifyUser("John Doe", "user urn"),
             urn = "playlist urn",
-            images = images
+            images = images,
+            title = "Playlist 1"
         )
 
         val trigger = Trigger(

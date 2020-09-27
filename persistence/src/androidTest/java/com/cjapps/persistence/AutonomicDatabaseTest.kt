@@ -50,6 +50,7 @@ class AutonomicDatabaseTest {
         assertEquals("playlist urn", playlistAndImages.playlist.urn)
         assertEquals(3, playlistAndImages.images.size)
         assertEquals("image 2 url", playlistAndImages.images[1].url)
+        assertEquals("playlist title", playlistAndImages.playlist.title)
     }
 
     @Test
@@ -82,7 +83,8 @@ class AutonomicDatabaseTest {
         val playlist = Playlist(
             snapshotId = "",
             user = SpotifyUser("user urn", " John Doe"),
-            urn = "playlist urn"
+            urn = "playlist urn",
+            title = "playlist title"
         )
 
         val images = listOf(

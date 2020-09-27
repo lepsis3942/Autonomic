@@ -3,23 +3,29 @@ package com.cjapps.autonomic.contextdetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.cjapps.domain.PlaybackContext
+import com.cjapps.domain.Playlist
 import com.cjapps.domain.Trigger
-import com.cjapps.network.model.PlaylistSimple
+import com.cjapps.network.isSuccess
 import com.cjapps.utility.livedata.Event
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ContextDetailViewModel @Inject constructor(
-
+    private val repository: ContextDetailRepository
 ) : ViewModel() {
+    private val errorEvent = MutableLiveData<Event<String>>()
     private val playbackUiState = MutableLiveData<PlaybackUiState>()
     private val triggerUiState = MutableLiveData<TriggerUiState>()
     private val navEvent = MutableLiveData<Event<NavEvent>>()
     private var isUiDirty = false
     private var isInitialized = false
     private var currentlySelectedTrigger: Trigger? = null
-    private var currentlySelectedPlayback: PlaylistSimple? = null
+    private var currentlySelectedPlayback: Playlist? = null
 
     val viewState = UiState(
+        errorEvent,
         playbackUiState,
         triggerUiState,
         navEvent
@@ -32,7 +38,15 @@ class ContextDetailViewModel @Inject constructor(
             is ContextDetailAction.ChooseTrigger -> navEvent.value = Event(NavEvent.SetTrigger)
             is ContextDetailAction.TriggerUpdated -> handleTriggerUpdate(action.newTrigger)
             is ContextDetailAction.PlaybackUpdated -> handlePlaybackUpdated(action.playlist)
-            is ContextDetailAction.Save -> handleSave()
+            is ContextDetailAction.Save -> {
+                val playlist = currentlySelectedPlayback
+                val trigger = currentlySelectedTrigger
+                if (playlist != null && trigger != null) {
+                    handleSave(playlist, trigger)
+                } else {
+                    errorEvent.value = Event("Please select both a playlist and trigger")
+                }
+            }
         }
     }
 
@@ -57,17 +71,32 @@ class ContextDetailViewModel @Inject constructor(
         currentlySelectedTrigger?.let { triggerUiState.value = TriggerUiState.CanEdit(it.name) }
     }
 
-    private fun handlePlaybackUpdated(playlist: PlaylistSimple) {
+    private fun handlePlaybackUpdated(playlist: Playlist) {
         val currentPlayback = currentlySelectedPlayback
-        if (currentPlayback != null && currentPlayback.id == playlist.id) return
+        if (currentPlayback != null && currentPlayback.urn == playlist.urn) return
 
         isUiDirty = true
         currentlySelectedPlayback = playlist
-        currentlySelectedPlayback?.let { playbackUiState.value = PlaybackUiState.CanEdit(it.name, it.images?.firstOrNull()?.url) }
+        currentlySelectedPlayback?.let { playbackUiState.value = PlaybackUiState.CanEdit(it.title, it.images.firstOrNull()?.url) }
     }
 
-    private fun handleSave() {
-        TODO("Ensure trigger not duplicated in DB, persist settings")
+    private fun handleSave(playlist: Playlist, trigger: Trigger) {
+        val playbackContext = PlaybackContext(
+            playlist = playlist,
+            trigger = trigger,
+            repeat = false,
+            shuffle = false
+        )
+        viewModelScope.launch {
+            val result = repository.saveContext(playbackContext)
+            if (result.isSuccess()) {
+                navEvent.postValue(Event(NavEvent.Finish))
+            } else {
+                result.message?.let {
+                    errorEvent.postValue(Event(it))
+                }
+            }
+        }
     }
 }
 
@@ -76,11 +105,12 @@ sealed class ContextDetailAction {
     object ChooseMusic : ContextDetailAction()
     object ChooseTrigger : ContextDetailAction()
     data class TriggerUpdated(val newTrigger: Trigger) : ContextDetailAction()
-    data class PlaybackUpdated(val playlist: PlaylistSimple) : ContextDetailAction()
+    data class PlaybackUpdated(val playlist: Playlist) : ContextDetailAction()
     object Save : ContextDetailAction()
 }
 
 data class UiState(
+    val errorEvent: LiveData<Event<String>>,
     val playbackUiState: LiveData<PlaybackUiState>,
     val triggerUiState: LiveData<TriggerUiState>,
     val navEvent: LiveData<Event<NavEvent>>

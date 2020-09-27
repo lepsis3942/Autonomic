@@ -51,6 +51,7 @@ class MapperTest {
             assertEquals(urn, domainContext.playlist.urn)
             assertEquals(snapshotId, domainContext.playlist.snapshotId)
             assertEquals(contextId, domainContext.id)
+            assertEquals(title, domainContext.playlist.title)
         }
     }
 
@@ -97,6 +98,7 @@ class MapperTest {
             assertEquals(user.urn, entityContext.playlistAndImages.playlist.user.urn)
             assertEquals(urn, entityContext.playlistAndImages.playlist.urn)
             assertEquals(snapshotId, entityContext.playlistAndImages.playlist.snapshotId)
+            assertEquals(title, entityContext.playlistAndImages.playlist.title)
         }
     }
 
@@ -118,7 +120,8 @@ class MapperTest {
             snapshotId = "",
             user = SpotifyUser("John Doe", "user urn"),
             urn = "playlist urn",
-            contextId = 8
+            contextId = 8,
+            title = "playlist test"
         )
 
         val images = listOf(
@@ -158,7 +161,8 @@ class MapperTest {
             snapshotId = "",
             user = DomainSpotifyUser("user urn", " John Doe"),
             urn = "playlist urn",
-            images = images
+            images = images,
+            title = "playlist test"
         )
 
         val trigger = DomainTrigger(

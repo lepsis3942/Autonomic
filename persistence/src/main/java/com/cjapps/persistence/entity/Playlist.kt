@@ -19,6 +19,7 @@ internal data class Playlist(
     @ColumnInfo(name = "snapshot_id") val snapshotId: String,
     @Embedded(prefix = "user_") val user: SpotifyUser,
     @ColumnInfo(name = "context_id") var contextId: Long = 0,
+    val title: String,
     val urn: String
 )
 

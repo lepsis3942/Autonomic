@@ -12,6 +12,7 @@ internal fun PlaylistWithImages.toDomain(): Playlist {
         id = playlist.id,
         images = images.map { it.toDomain() },
         snapshotId = playlist.snapshotId,
+        title = playlist.title,
         user = playlist.user.toDomain(),
         urn = playlist.urn
     )
@@ -43,10 +44,11 @@ internal fun Playlist.toEntity(context: PlaybackContext): PlaylistWithImages {
 
 internal fun Playlist.toEntity(contextId: Long): PlaylistWithImages {
     val playlist = EntityPlaylist(
+        contextId = contextId,
         id = id,
         snapshotId = snapshotId,
+        title = title,
         user = user.toEntity(),
-        contextId = contextId,
         urn = urn
     )
     return PlaylistWithImages(

@@ -16,11 +16,12 @@ import com.cjapps.autonomic.databinding.FragContextDetailBinding
 import com.cjapps.autonomic.playback.PlaybackSelectionFragment
 import com.cjapps.autonomic.trigger.TriggerSelectionFragment
 import com.cjapps.autonomic.view.ViewConstants
+import com.cjapps.domain.Playlist
 import com.cjapps.domain.Trigger
-import com.cjapps.network.model.PlaylistSimple
 import com.cjapps.utility.extensions.observeValueFromNavBackStack
 import com.cjapps.utility.livedata.EventObserver
 import com.cjapps.utility.viewbinding.viewBindingLifecycle
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -61,10 +62,13 @@ class ContextDetailFragment : DaggerFragment() {
         }
 
         viewModel.viewState.apply {
-            playbackUiState.observe(viewLifecycleOwner, Observer {
+            errorEvent.observe(viewLifecycleOwner, EventObserver {
+                Snackbar.make(viewBinding.contextDetailSaveButton, it, Snackbar.LENGTH_LONG).show()
+            })
+            playbackUiState.observe(viewLifecycleOwner, {
                 updatePlaybackUi(it)
             })
-            triggerUiState.observe(viewLifecycleOwner, Observer {
+            triggerUiState.observe(viewLifecycleOwner, {
                 updateTriggerUi(it)
             })
             navEvent.observe(viewLifecycleOwner, EventObserver {
@@ -76,7 +80,7 @@ class ContextDetailFragment : DaggerFragment() {
             if (selection == null) return@Observer
             viewModel.executeAction(ContextDetailAction.TriggerUpdated(selection))
         })
-        observeValueFromNavBackStack(PlaybackSelectionFragment.KEY_SELECTED_TENTATIVE_PLAYBACK, Observer<PlaylistSimple> { selection ->
+        observeValueFromNavBackStack(PlaybackSelectionFragment.KEY_SELECTED_TENTATIVE_PLAYBACK, Observer<Playlist> { selection ->
             if (selection == null) return@Observer
             viewModel.executeAction(ContextDetailAction.PlaybackUpdated(selection))
         })
@@ -138,6 +142,9 @@ class ContextDetailFragment : DaggerFragment() {
             is NavEvent.SetMusic -> {
                 val playbackDirections = ContextDetailFragmentDirections.actionContextDetailFragmentToPlaybackSelectionFragment()
                 findNavController().navigate(playbackDirections)
+            }
+            is NavEvent.Finish -> {
+                findNavController().popBackStack()
             }
         }
     }

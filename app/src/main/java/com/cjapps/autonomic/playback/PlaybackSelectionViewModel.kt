@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cjapps.autonomic.mapper.toDomain
+import com.cjapps.domain.Playlist
 import com.cjapps.network.isSuccess
 import com.cjapps.network.model.PlaylistSimple
 import com.cjapps.utility.coroutines.ICoroutineDispatcherProvider
@@ -43,7 +45,7 @@ class PlaybackSelectionViewModel @Inject constructor(
                 if (!allPlaylistsRetrieved) getPlaylists(offset = currentPlaylistPagerOffset)
             }
             is PlaybackSelectionAction.PlaylistSelected -> {
-                navUiStateLiveData.value = Event(NavEvent.NavigateBack(action.playlist))
+                navUiStateLiveData.value = Event(NavEvent.NavigateBack(action.playlist.toDomain()))
             }
         }
     }
@@ -96,5 +98,5 @@ sealed class PlaybackSelectionAction {
 }
 
 sealed class NavEvent {
-    data class NavigateBack(val playlist: PlaylistSimple) : NavEvent()
+    data class NavigateBack(val playlist: Playlist) : NavEvent()
 }
