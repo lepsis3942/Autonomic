@@ -70,7 +70,7 @@ class PlaybackSelectionListAdapter(
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<PlaylistSimple>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<PlaylistSimple>() {
             override fun areItemsTheSame(
                 oldItem: PlaylistSimple,
                 newItem: PlaylistSimple

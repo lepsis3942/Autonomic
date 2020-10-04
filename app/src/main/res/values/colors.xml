@@ -11,5 +11,6 @@
 
     <color name="black">#000000</color>
     <color name="error_red">#FF1200</color>
+    <color name="light_grey">#AFAFAF</color>
     <color name="white">#ffffff</color>
 </resources>

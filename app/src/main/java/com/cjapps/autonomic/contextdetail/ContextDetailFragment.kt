@@ -85,7 +85,7 @@ class ContextDetailFragment : DaggerFragment() {
             viewModel.executeAction(ContextDetailAction.PlaybackUpdated(selection))
         })
 
-        viewModel.executeAction(ContextDetailAction.Init(args.contextId))
+        viewModel.executeAction(ContextDetailAction.Init(args.contextToEdit))
     }
 
     private fun updatePlaybackUi(uiState: PlaybackUiState) {

@@ -25,9 +25,10 @@
         android:label="@string/title_context_detail">
 
         <argument
-            android:name="context_id"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            android:name="context_to_edit"
+            android:defaultValue="@null"
+            app:argType="com.cjapps.domain.PlaybackContext"
+            app:nullable="true" />
         <action
             android:id="@+id/action_contextDetailFragment_to_triggerSelectionFragment"
             app:destination="@id/triggerSelectionFragment" />

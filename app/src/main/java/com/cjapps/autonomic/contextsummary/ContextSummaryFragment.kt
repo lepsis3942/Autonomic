@@ -7,22 +7,25 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cjapps.autonomic.R
+import com.cjapps.autonomic.databinding.FragContextSummaryBinding
 import com.cjapps.autonomic.serialization.ISerializer
+import com.cjapps.autonomic.view.SpaceItemDecoration
+import com.cjapps.domain.PlaybackContext
 import com.cjapps.utility.livedata.EventObserver
+import com.cjapps.utility.viewbinding.viewBindingLifecycle
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.frag_context_summary.*
 import javax.inject.Inject
 
-/**
- * Created by cjgonz on 2019-12-30.
- */
 class ContextSummaryFragment: DaggerFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var serializer: ISerializer
 
+    private val listAdapter = ContextSummaryListAdapter(::itemSelected)
     private val viewModel by viewModels<ContextSummaryViewModel> { viewModelFactory }
+    private val viewBinding by viewBindingLifecycle { FragContextSummaryBinding.bind(requireView()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,8 +37,18 @@ class ContextSummaryFragment: DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context_summary_create_button.setOnClickListener {
-            viewModel.createButtonTapped()
+        viewBinding.contextSummaryCreateButton.setOnClickListener {
+            viewModel.executeAction(ContextSummaryAction.CreateButtonTapped)
+        }
+        viewBinding.contextSummaryRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = listAdapter
+            if (itemDecorationCount > 0) {
+                for (i in 0..itemDecorationCount) {
+                    removeItemDecorationAt(i)
+                }
+            }
+            addItemDecoration(SpaceItemDecoration(context, 8.0F))
         }
     }
 
@@ -44,14 +57,39 @@ class ContextSummaryFragment: DaggerFragment() {
 
         viewModel.navigationEventLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                Login -> findNavController().navigate(R.id.action_contextSummaryFragment_to_loginFragment)
-                ContextCreation -> {
+                NavDestination.Login -> findNavController().navigate(R.id.action_contextSummaryFragment_to_loginFragment)
+                NavDestination.ContextCreation -> {
                     val action = ContextSummaryFragmentDirections.actionContextSummaryFragmentToContextDetailFragment()
+                    findNavController().navigate(action)
+                }
+                is NavDestination.ContextEdit -> {
+                    val action = ContextSummaryFragmentDirections.actionContextSummaryFragmentToContextDetailFragment(it.contextToEdit)
                     findNavController().navigate(action)
                 }
             }
         })
+        viewModel.uiState.contextItemsStateLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is ContextItemsUiState.Loading -> {
+                    viewBinding.contextSummaryLoadingIndicator.visibility = View.VISIBLE
+                    viewBinding.contextSummaryRecyclerView.visibility = View.GONE
+                }
+                is ContextItemsUiState.Empty -> {
+                    viewBinding.contextSummaryLoadingIndicator.visibility = View.GONE
+                    viewBinding.contextSummaryRecyclerView.visibility = View.GONE
+                }
+                is ContextItemsUiState.ItemsRetrieved -> {
+                    listAdapter.submitList(it.items)
+                    viewBinding.contextSummaryLoadingIndicator.visibility = View.GONE
+                    viewBinding.contextSummaryRecyclerView.visibility = View.VISIBLE
+                }
+            }
+        })
 
-        viewModel.initialize()
+        viewModel.executeAction(ContextSummaryAction.Initialize)
+    }
+
+    private fun itemSelected(playbackContext: PlaybackContext) {
+        viewModel.executeAction(ContextSummaryAction.ContextSelectedToEdit(playbackContext))
     }
 }

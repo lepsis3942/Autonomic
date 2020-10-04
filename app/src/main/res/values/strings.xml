@@ -14,6 +14,7 @@
     <string name="context_detail_select_button">Choose</string>
 
     <string name="context_summary_create_new">Create</string>
+    <string name="context_summary_list_item_content_desc_album_summary">Album Art</string>
 
     <string name="playback_select_content_desc_album_art">Album Art</string>
 

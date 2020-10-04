@@ -32,6 +32,9 @@ internal abstract class PlaylistDao (private val db: AutonomicDatabase) {
     @Transaction
     open suspend fun updatePlaylistWithImages(playlistWithImages: PlaylistWithImages) {
         updatePlaylist(playlistWithImages.playlist)
-        db.imageDao().updateImages(playlistWithImages.images)
+        val currentImages = db.imageDao().getImagesForPlaylist(playlistWithImages.playlist.id)
+        val newImages = playlistWithImages.images
+        currentImages.forEach { db.imageDao().deleteImage(it) }
+        newImages.forEach { db.imageDao().insertImage(it) }
     }
 }

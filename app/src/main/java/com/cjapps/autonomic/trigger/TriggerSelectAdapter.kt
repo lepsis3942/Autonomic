@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.cjapps.autonomic.R
 import com.cjapps.autonomic.databinding.TriggerSelectListItemBinding
+import com.cjapps.autonomic.view.toResourceId
 import com.cjapps.domain.Trigger
-import com.cjapps.domain.TriggerDeviceType
 
 class TriggerSelectAdapter(
     private val itemSelected: (Trigger) -> Unit
@@ -53,19 +52,9 @@ class TriggerSelectAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(device: Trigger) {
-            binding.triggerSelectListImage.setImageResource(imageIdForDeviceType(device.deviceType))
+            binding.triggerSelectListImage.setImageResource(device.deviceType.toResourceId())
             binding.triggerSelectListName.text = device.name
             binding.root.setOnClickListener { itemSelected(device) }
-        }
-
-        private fun imageIdForDeviceType(deviceType: TriggerDeviceType): Int {
-            return when (deviceType) {
-                TriggerDeviceType.BLUETOOTH_VEHICLE_AUDIO -> R.drawable.ic_car_black
-                TriggerDeviceType.BLUETOOTH_AUDIO -> R.drawable.ic_headset_black
-                TriggerDeviceType.BLUETOOTH_COMPUTER -> R.drawable.ic_computer_black
-                TriggerDeviceType.BLUETOOTH_WEARABLE -> R.drawable.ic_devices_other_black
-                TriggerDeviceType.BLUETOOTH_GENERIC -> R.drawable.ic_bluetooth_black
-            }
         }
     }
 }
