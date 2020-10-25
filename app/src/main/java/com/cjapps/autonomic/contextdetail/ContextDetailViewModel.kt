@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cjapps.autonomic.IResourceProvider
+import com.cjapps.autonomic.R
 import com.cjapps.domain.PlaybackContext
 import com.cjapps.domain.Playlist
 import com.cjapps.domain.Trigger
@@ -13,10 +15,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ContextDetailViewModel @Inject constructor(
-    private val repository: ContextDetailRepository
+    private val repository: ContextDetailRepository,
+    private val resourceProvider: IResourceProvider
 ) : ViewModel() {
     private val errorEvent = MutableLiveData<Event<String>>()
     private val playbackUiState = MutableLiveData<PlaybackUiState>()
+    private val toolbarUiState = MutableLiveData<ToolbarUiState>()
     private val triggerUiState = MutableLiveData<TriggerUiState>()
     private val navEvent = MutableLiveData<Event<NavEvent>>()
     private var isUiDirty = false
@@ -28,6 +32,7 @@ class ContextDetailViewModel @Inject constructor(
     val viewState = UiState(
         errorEvent,
         playbackUiState,
+        toolbarUiState,
         triggerUiState,
         navEvent
     )
@@ -37,23 +42,17 @@ class ContextDetailViewModel @Inject constructor(
             is ContextDetailAction.Init -> initialize(action.contextToEdit)
             is ContextDetailAction.ChooseMusic -> navEvent.value = Event(NavEvent.SetMusic)
             is ContextDetailAction.ChooseTrigger -> navEvent.value = Event(NavEvent.SetTrigger)
+            is ContextDetailAction.DeleteContext -> handleDelete(currentlySelectedPlayback, currentlySelectedTrigger)
             is ContextDetailAction.TriggerUpdated -> handleTriggerUpdate(action.newTrigger)
             is ContextDetailAction.PlaybackUpdated -> handlePlaybackUpdated(action.playlist)
-            is ContextDetailAction.Save -> {
-                val playlist = currentlySelectedPlayback
-                val trigger = currentlySelectedTrigger
-                if (playlist != null && trigger != null) {
-                    handleSave(playlist, trigger)
-                } else {
-                    errorEvent.value = Event("Please select both a playlist and trigger")
-                }
-            }
+            is ContextDetailAction.Save -> handleSave(currentlySelectedPlayback, currentlySelectedTrigger)
         }
     }
 
     private fun initialize(contextToEdit: PlaybackContext?) {
         if (isInitialized) return
 
+        val toolbarUi: ToolbarUiState
         if (contextToEdit != null) {
             // Edit mode
             contextId = contextToEdit.id
@@ -65,11 +64,14 @@ class ContextDetailViewModel @Inject constructor(
                 currentlySelectedPlayback = this
                 playbackUiState.value = PlaybackUiState.CanEdit(title, images.firstOrNull()?.url)
             }
+            toolbarUi = ToolbarUiState.ShowDelete
         } else {
             triggerUiState.value = TriggerUiState.Unset
             playbackUiState.value = PlaybackUiState.Unset
+            toolbarUi = ToolbarUiState.HideDelete
         }
         isInitialized = true
+        toolbarUiState.value = toolbarUi
     }
 
     private fun handleTriggerUpdate(newTrigger: Trigger) {
@@ -92,14 +94,23 @@ class ContextDetailViewModel @Inject constructor(
         currentlySelectedPlayback?.let { playbackUiState.value = PlaybackUiState.CanEdit(it.title, it.images.firstOrNull()?.url) }
     }
 
-    private fun handleSave(playlist: Playlist, trigger: Trigger) {
-        val playbackContext = PlaybackContext(
-            id = contextId,
-            playlist = playlist,
-            trigger = trigger,
-            repeat = false,
-            shuffle = false
-        )
+    private fun handleDelete(playlist: Playlist?, trigger: Trigger?) {
+        if (playlist == null || trigger == null) {
+            return
+        }
+        viewModelScope.launch {
+            repository.deleteContext(createPlaybackContext(playlist, trigger))
+            navEvent.postValue(Event(NavEvent.Finish))
+        }
+    }
+
+    private fun handleSave(playlist: Playlist?, trigger: Trigger?) {
+        if (playlist == null || trigger == null) {
+            errorEvent.value = Event(resourceProvider.getString(R.string.context_detail_error_select_both))
+            return
+        }
+
+        val playbackContext = createPlaybackContext(playlist, trigger)
         viewModelScope.launch {
             val result = repository.saveContext(playbackContext)
             if (result.isSuccess()) {
@@ -111,12 +122,23 @@ class ContextDetailViewModel @Inject constructor(
             }
         }
     }
+
+    private fun createPlaybackContext(playlist: Playlist, trigger: Trigger): PlaybackContext {
+        return PlaybackContext(
+            id = contextId,
+            playlist = playlist,
+            trigger = trigger,
+            repeat = false,
+            shuffle = false
+        )
+    }
 }
 
 sealed class ContextDetailAction {
     data class Init(val contextToEdit: PlaybackContext?) : ContextDetailAction()
     object ChooseMusic : ContextDetailAction()
     object ChooseTrigger : ContextDetailAction()
+    object DeleteContext : ContextDetailAction()
     data class TriggerUpdated(val newTrigger: Trigger) : ContextDetailAction()
     data class PlaybackUpdated(val playlist: Playlist) : ContextDetailAction()
     object Save : ContextDetailAction()
@@ -125,9 +147,15 @@ sealed class ContextDetailAction {
 data class UiState(
     val errorEvent: LiveData<Event<String>>,
     val playbackUiState: LiveData<PlaybackUiState>,
+    val toolbarUiState: LiveData<ToolbarUiState>,
     val triggerUiState: LiveData<TriggerUiState>,
     val navEvent: LiveData<Event<NavEvent>>
 )
+
+sealed class ToolbarUiState {
+    object HideDelete : ToolbarUiState()
+    object ShowDelete : ToolbarUiState()
+}
 
 sealed class TriggerUiState {
     object Unset : TriggerUiState()

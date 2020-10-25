@@ -28,4 +28,10 @@ class ContextDetailRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun deleteContext(playbackContext: PlaybackContext) {
+        return withContext(dispatchers.Default) {
+            db.deleteContext(playbackContext)
+        }
+    }
 }

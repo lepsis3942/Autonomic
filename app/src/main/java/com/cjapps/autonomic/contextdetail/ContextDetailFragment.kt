@@ -1,9 +1,7 @@
 package com.cjapps.autonomic.contextdetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -68,6 +66,9 @@ class ContextDetailFragment : DaggerFragment() {
             playbackUiState.observe(viewLifecycleOwner, {
                 updatePlaybackUi(it)
             })
+            toolbarUiState.observe(viewLifecycleOwner, {
+                setHasOptionsMenu(it == ToolbarUiState.ShowDelete)
+            })
             triggerUiState.observe(viewLifecycleOwner, {
                 updateTriggerUi(it)
             })
@@ -86,6 +87,20 @@ class ContextDetailFragment : DaggerFragment() {
         })
 
         viewModel.executeAction(ContextDetailAction.Init(args.contextToEdit))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.context_detail_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.context_detail_menu_delete -> {
+                viewModel.executeAction(ContextDetailAction.DeleteContext)
+                true
+            }
+            else -> false
+        }
     }
 
     private fun updatePlaybackUi(uiState: PlaybackUiState) {

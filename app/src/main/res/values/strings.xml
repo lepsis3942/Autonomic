@@ -12,6 +12,7 @@
     <string name="context_detail_when_connect_title">When I connect to</string>
     <string name="context_detail_save">Save</string>
     <string name="context_detail_select_button">Choose</string>
+    <string name="context_detail_error_select_both">Please select both a playlist and trigger</string>
 
     <string name="context_summary_create_new">Create</string>
     <string name="context_summary_list_item_content_desc_album_summary">Album Art</string>
@@ -20,6 +21,8 @@
 
     <string name="trigger_select_bluetooth_disabled">Bluetooth Disabled, tap to enable</string>
     <string name="trigger_select_content_desc_item_image">Device Description Image</string>
+
+    <string name="menu_context_detail_delete">Delete</string>
 
     <string name="notification_channel_playback_name">Playback Initialization</string>
     <string name="notification_playback_content">Starting music playback</string>
