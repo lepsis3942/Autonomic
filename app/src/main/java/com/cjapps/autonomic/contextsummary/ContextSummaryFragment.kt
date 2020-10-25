@@ -8,6 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.cjapps.autonomic.R
 import com.cjapps.autonomic.databinding.FragContextSummaryBinding
 import com.cjapps.autonomic.serialization.ISerializer
@@ -44,11 +46,17 @@ class ContextSummaryFragment: DaggerFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
             if (itemDecorationCount > 0) {
-                for (i in 0..itemDecorationCount) {
+                for (i in 0 until itemDecorationCount) {
                     removeItemDecorationAt(i)
                 }
             }
-            addItemDecoration(SpaceItemDecoration(context, 8.0F))
+            addItemDecoration(SpaceItemDecoration(context, spaceHeight = 8.0F))
+            addOnScrollListener(object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val createButton = viewBinding.contextSummaryCreateButton
+                    viewModel.executeAction(ContextSummaryAction.ContextListScrolled(dy, createButton.isShown))
+                }
+            })
         }
     }
 
@@ -83,6 +91,12 @@ class ContextSummaryFragment: DaggerFragment() {
                     viewBinding.contextSummaryLoadingIndicator.visibility = View.GONE
                     viewBinding.contextSummaryRecyclerView.visibility = View.VISIBLE
                 }
+            }
+        })
+        viewModel.uiState.createContextButtonUiState.observe(viewLifecycleOwner, {
+            when (it) {
+                CreateContextButtonUiState.Show -> viewBinding.contextSummaryCreateButton.show()
+                CreateContextButtonUiState.Hide -> viewBinding.contextSummaryCreateButton.hide()
             }
         })
 

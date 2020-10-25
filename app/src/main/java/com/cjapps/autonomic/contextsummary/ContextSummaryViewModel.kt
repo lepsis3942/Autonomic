@@ -15,10 +15,12 @@ class ContextSummaryViewModel @Inject constructor(
     private val repository: PlaybackContextSummaryRepository
 ): ViewModel() {
     private val contextItemsUiStateLiveData = MutableLiveData<ContextItemsUiState>()
+    private val createContextUiStateLiveData = MutableLiveData<CreateContextButtonUiState>()
 
     val navigationEventLiveData by lazy { MutableLiveData<Event<NavDestination>>() }
     val uiState = UiState(
-        contextItemsUiStateLiveData
+        contextItemsUiStateLiveData,
+        createContextUiStateLiveData
     )
 
     fun executeAction(action: ContextSummaryAction) {
@@ -26,6 +28,16 @@ class ContextSummaryViewModel @Inject constructor(
             ContextSummaryAction.Initialize -> initialize()
             is ContextSummaryAction.ContextSelectedToEdit -> navigationEventLiveData.value = Event(NavDestination.ContextEdit(action.context))
             is ContextSummaryAction.CreateButtonTapped -> navigationEventLiveData.value = Event(NavDestination.ContextCreation)
+            is ContextSummaryAction.ContextListScrolled -> {
+                val scrollThreshold = 10
+                if (action.dy > scrollThreshold && action.createButtonShowing) {
+                    // Scroll down
+                    createContextUiStateLiveData.value = CreateContextButtonUiState.Hide
+                } else if (action.dy < -scrollThreshold) {
+                    // Scroll up
+                    createContextUiStateLiveData.value = CreateContextButtonUiState.Show
+                }
+            }
         }
     }
 
@@ -48,7 +60,8 @@ class ContextSummaryViewModel @Inject constructor(
 }
 
 data class UiState(
-    val contextItemsStateLiveData: LiveData<ContextItemsUiState>
+    val contextItemsStateLiveData: LiveData<ContextItemsUiState>,
+    val createContextButtonUiState: LiveData<CreateContextButtonUiState>
 )
 
 sealed class ContextItemsUiState {
@@ -57,9 +70,15 @@ sealed class ContextItemsUiState {
     data class ItemsRetrieved(val items: List<PlaybackContext>): ContextItemsUiState()
 }
 
+sealed class CreateContextButtonUiState {
+    object Show: CreateContextButtonUiState()
+    object Hide: CreateContextButtonUiState()
+}
+
 sealed class ContextSummaryAction {
-    data class ContextSelectedToEdit(val context: PlaybackContext) : ContextSummaryAction()
     object CreateButtonTapped : ContextSummaryAction()
+    data class ContextListScrolled(val dy: Int, val createButtonShowing: Boolean) : ContextSummaryAction()
+    data class ContextSelectedToEdit(val context: PlaybackContext) : ContextSummaryAction()
     object Initialize: ContextSummaryAction()
 }
 
