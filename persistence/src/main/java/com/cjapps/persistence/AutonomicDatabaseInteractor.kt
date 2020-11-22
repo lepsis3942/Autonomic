@@ -36,6 +36,10 @@ class AutonomicDatabaseInteractor @Inject constructor(applicationContext: Contex
         return db.triggerDao().getAllTriggers().map { it.toDomain() }
     }
 
+    suspend fun getContextForMacAddress(macAddress: String): PlaybackContext? {
+        return db.contextDao().getContextByMacAddress(macAddress)?.toDomain()
+    }
+
     internal suspend fun getNumberPlaylists(): Int {
         return db.playlistDao().getNumberPlaylists()
     }

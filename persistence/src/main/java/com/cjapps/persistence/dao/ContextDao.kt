@@ -8,8 +8,16 @@ import com.cjapps.persistence.entity.FullContext
 @Dao
 internal abstract class ContextDao constructor(private val db: AutonomicDatabase) {
     @Transaction
-    @Query("SELECT * FROM CONTEXT")
+    @Query("SELECT * FROM context")
     abstract suspend fun getAllContexts(): List<FullContext>
+
+    @Transaction
+    @Query(
+    "SELECT * FROM context " +
+          "INNER JOIN `trigger` as trig ON trig.context_id = context.id " +
+          "WHERE trig.mac_address = :macAddress"
+    )
+    abstract suspend fun getContextByMacAddress(macAddress: String): FullContext?
 
     @Transaction
     @Delete

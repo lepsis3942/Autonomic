@@ -3,6 +3,7 @@ package com.cjapps.autonomic.di
 import android.content.Context
 import com.cjapps.autonomic.AutonomicApplication
 import com.cjapps.autonomic.bridge.di.BridgeModule
+import com.cjapps.autonomic.broadcastreceiver.di.BroadcastReceiverModule
 import com.cjapps.autonomic.contextdetail.di.ContextDetailModule
 import com.cjapps.autonomic.contextsummary.di.ContextSummaryModule
 import com.cjapps.autonomic.login.di.LoginModule
@@ -22,6 +23,7 @@ import javax.inject.Singleton
     AppModule::class,
     NetworkModule::class,
     BridgeModule::class,
+    BroadcastReceiverModule::class,
     // UI
     LoginModule::class,
     ContextSummaryModule::class,

@@ -9,8 +9,7 @@ import com.cjapps.persistence.dao.TriggerDao
 import com.cjapps.persistence.entity.*
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
@@ -79,7 +78,31 @@ class AutonomicDatabaseTest {
         assertEquals(playlist, newPlaylists[0])
     }
 
-    private fun getTestContext(): FullContext {
+    @Test
+    fun testRetrieveContextByMacAddress() = runBlocking {
+        contextDao.insertFullContext(getTestContext("8747"))
+        contextDao.insertFullContext(getTestContext("1234"))
+        contextDao.insertFullContext(getTestContext("3596"))
+
+        val context = contextDao.getContextByMacAddress("1234")
+
+        assertNotNull(context)
+        assertEquals("1234", context?.trigger?.macAddress)
+        assertEquals("playlist title", context?.playlistAndImages?.playlist?.title)
+    }
+
+    @Test
+    fun testRetrieveNoMatchContextByMacAddress() = runBlocking {
+        contextDao.insertFullContext(getTestContext("8747"))
+        contextDao.insertFullContext(getTestContext("1234"))
+        contextDao.insertFullContext(getTestContext("3596"))
+
+        val context = contextDao.getContextByMacAddress("4321")
+
+        assertNull(context)
+    }
+
+    private fun getTestContext(macAddress: String = "1234"): FullContext {
         val playlist = Playlist(
             snapshotId = "",
             user = SpotifyUser("user urn", " John Doe"),
@@ -95,7 +118,7 @@ class AutonomicDatabaseTest {
 
         val context = Context(repeat = true, shuffle = true)
         val trigger = Trigger(
-            macAddress = "1234",
+            macAddress = macAddress,
             name = "Car",
             deviceType = TriggerDeviceType.BLUETOOTH_VEHICLE_AUDIO
         )
