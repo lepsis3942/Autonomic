@@ -79,9 +79,10 @@ class AutonomicDatabaseInteractorTest {
 
         val existingContexts = interactor.getAllContexts()
         assertEquals(1, existingContexts.size)
+        assertEquals(Repeat.ALL, existingContexts.first().repeat)
 
         val updatedContext = existingContexts.first().apply {
-            repeat = false
+            repeat = Repeat.ONCE
             playlist = playlist.apply {
                 snapshotId = "newSnap"
                 images = images + Image(size = ImageSize.MEDIUM, url = "newUrl")
@@ -94,7 +95,7 @@ class AutonomicDatabaseInteractorTest {
         assertEquals(1, interactor.getNumberPlaylists())
         assertEquals(existingContexts.first().id, updatedContextList.first().id)
         assertEquals("newSnap", updatedContextList.first().playlist.snapshotId)
-        assertEquals(false, updatedContextList.first().repeat)
+        assertEquals(Repeat.ONCE, updatedContextList.first().repeat)
         assertEquals(4, updatedContextList.first().playlist.images.size)
         assertEquals("image 3 url", updatedContextList.first().playlist.images[2].url)   // Test old url still there
         assertEquals("newUrl", updatedContextList.first().playlist.images[3].url)   // Test new url added
@@ -124,7 +125,7 @@ class AutonomicDatabaseInteractorTest {
         return PlaybackContext(
             playlist = playlist,
             trigger = trigger,
-            repeat = true,
+            repeat = Repeat.ALL,
             shuffle = true
         )
     }

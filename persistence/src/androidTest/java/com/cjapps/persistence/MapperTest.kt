@@ -1,6 +1,7 @@
 package com.cjapps.persistence
 
 import com.cjapps.domain.PlaybackContext
+import com.cjapps.domain.Repeat
 import com.cjapps.persistence.entity.*
 import com.cjapps.persistence.mapper.toDomain
 import com.cjapps.persistence.mapper.toEntity
@@ -62,7 +63,7 @@ class MapperTest {
 
         entityContext.context.apply {
             assertEquals(id, domainContext.id)
-            assertEquals(repeat, domainContext.repeat)
+            assertEquals(RepeatType.NONE, repeat)
             assertEquals(shuffle, domainContext.shuffle)
         }
     }
@@ -109,7 +110,7 @@ class MapperTest {
 
         domainContext.apply {
             assertEquals(id, entityContext.context.id)
-            assertEquals(repeat, entityContext.context.repeat)
+            assertEquals(RepeatType.NONE, entityContext.context.repeat)
             assertEquals(shuffle, entityContext.context.shuffle)
         }
     }
@@ -130,7 +131,7 @@ class MapperTest {
             Image(url = "image 3 url", size = ImageSize.LARGE, playlistId = playlist.id)
         )
 
-        val context = Context(id = 8, repeat = true, shuffle = true)
+        val context = Context(id = 8, repeat = RepeatType.NONE, shuffle = true)
         val trigger = Trigger(
             id = 5,
             macAddress = "1234",
@@ -176,7 +177,7 @@ class MapperTest {
             id = 3,
             playlist = playlist,
             trigger = trigger,
-            repeat = true,
+            repeat = Repeat.NONE,
             shuffle = true
         )
     }

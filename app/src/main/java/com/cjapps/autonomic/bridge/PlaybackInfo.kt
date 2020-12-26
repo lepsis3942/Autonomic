@@ -1,5 +1,6 @@
 package com.cjapps.autonomic.bridge
 
+import com.cjapps.domain.Repeat
 import com.squareup.moshi.JsonClass
 
 /**
@@ -13,4 +14,4 @@ data class PlaybackInfo(
 )
 
 @JsonClass(generateAdapter = true)
-data class PlaybackOptions(val shuffle: Boolean = false, val repeatTimes: Int = -1)
+data class PlaybackOptions(val shuffle: Boolean = false, val repeat: Repeat = Repeat.NONE)

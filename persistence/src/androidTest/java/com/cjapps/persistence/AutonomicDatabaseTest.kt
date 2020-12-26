@@ -46,6 +46,7 @@ class AutonomicDatabaseTest {
 
         assertEquals(1, contexts.size)
         val playlistAndImages = contexts.first().playlistAndImages
+        assertEquals(RepeatType.ALL, contexts.first().context.repeat)
         assertEquals("playlist urn", playlistAndImages.playlist.urn)
         assertEquals(3, playlistAndImages.images.size)
         assertEquals("image 2 url", playlistAndImages.images[1].url)
@@ -116,7 +117,7 @@ class AutonomicDatabaseTest {
             Image(url = "image 3 url", size = ImageSize.MEDIUM)
         )
 
-        val context = Context(repeat = true, shuffle = true)
+        val context = Context(repeat = RepeatType.ALL, shuffle = true)
         val trigger = Trigger(
             macAddress = macAddress,
             name = "Car",

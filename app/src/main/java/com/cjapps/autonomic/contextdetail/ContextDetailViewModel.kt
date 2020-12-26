@@ -8,6 +8,7 @@ import com.cjapps.autonomic.IResourceProvider
 import com.cjapps.autonomic.R
 import com.cjapps.domain.PlaybackContext
 import com.cjapps.domain.Playlist
+import com.cjapps.domain.Repeat
 import com.cjapps.domain.Trigger
 import com.cjapps.network.isSuccess
 import com.cjapps.utility.livedata.Event
@@ -22,7 +23,7 @@ class ContextDetailViewModel @Inject constructor(
     private val playbackUiState = MutableLiveData<PlaybackUiState>()
     private val toolbarUiState = MutableLiveData<ToolbarUiState>()
     private val triggerUiState = MutableLiveData<TriggerUiState>()
-    private val repeatIsSelectedUiState = MutableLiveData<Boolean>()
+    private val repeatIsSelectedUiState = MutableLiveData<Repeat>()
     private val shuffleIsSelectedUiState = MutableLiveData<Boolean>()
     private val navEvent = MutableLiveData<Event<NavEvent>>()
     private var isUiDirty = false
@@ -30,7 +31,7 @@ class ContextDetailViewModel @Inject constructor(
     private var contextId: Long = 0L
     private var currentlySelectedTrigger: Trigger? = null
     private var currentlySelectedPlayback: Playlist? = null
-    private var repeat: Boolean = false
+    private var repeat: Repeat = Repeat.NONE
     private var shuffle: Boolean = false
 
     val viewState = UiState(
@@ -58,10 +59,7 @@ class ContextDetailViewModel @Inject constructor(
                 currentlySelectedPlayback,
                 currentlySelectedTrigger
             )
-            is ContextDetailAction.RepeatTapped -> {
-                repeat = !repeat
-                repeatIsSelectedUiState.value = repeat
-            }
+            is ContextDetailAction.RepeatTapped -> handleRepeatTapped(repeat)
             is ContextDetailAction.ShuffleTapped -> {
                 shuffle = !shuffle
                 shuffleIsSelectedUiState.value = shuffle
@@ -128,9 +126,20 @@ class ContextDetailViewModel @Inject constructor(
         }
     }
 
+    private fun handleRepeatTapped(previousRepeatSetting: Repeat) {
+        val newRepeatSetting = when (previousRepeatSetting) {
+            Repeat.NONE -> Repeat.ALL
+            Repeat.ALL -> Repeat.ONCE
+            Repeat.ONCE -> Repeat.NONE
+        }
+        repeat = newRepeatSetting
+        repeatIsSelectedUiState.value = repeat
+    }
+
     private fun handleSave(playlist: Playlist?, trigger: Trigger?) {
         if (playlist == null || trigger == null) {
-            errorEvent.value = Event(resourceProvider.getString(R.string.context_detail_error_select_both))
+            errorEvent.value =
+                Event(resourceProvider.getString(R.string.context_detail_error_select_both))
             return
         }
 
@@ -175,7 +184,7 @@ data class UiState(
     val playbackUiState: LiveData<PlaybackUiState>,
     val toolbarUiState: LiveData<ToolbarUiState>,
     val triggerUiState: LiveData<TriggerUiState>,
-    val repeatIsSelectedUiState: LiveData<Boolean>,
+    val repeatIsSelectedUiState: LiveData<Repeat>,
     val shuffleIsSelectedUiState: LiveData<Boolean>,
     val navEvent: LiveData<Event<NavEvent>>
 )

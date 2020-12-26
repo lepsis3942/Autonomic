@@ -15,6 +15,7 @@ import com.cjapps.autonomic.playback.PlaybackSelectionFragment
 import com.cjapps.autonomic.trigger.TriggerSelectionFragment
 import com.cjapps.autonomic.view.ViewConstants
 import com.cjapps.domain.Playlist
+import com.cjapps.domain.Repeat
 import com.cjapps.domain.Trigger
 import com.cjapps.utility.extensions.observeValueFromNavBackStack
 import com.cjapps.utility.livedata.EventObserver
@@ -85,7 +86,7 @@ class ContextDetailFragment : DaggerFragment() {
                 viewBinding.contextDetailShuffle.isSelected = it
             })
             repeatIsSelectedUiState.observe(viewLifecycleOwner, {
-                viewBinding.contextDetailRepeat.isSelected = it
+                updateRepeatUi(it)
             })
         }
 
@@ -128,7 +129,10 @@ class ContextDetailFragment : DaggerFragment() {
                 viewBinding.apply {
                     contextDetailEditMusicGroup.visibility = View.GONE
                     contextDetailMusicChooseButton.visibility = View.VISIBLE
-                    contextDetailMusicArt.load(drawableResId = R.drawable.ic_album_black, builder = requestBuilder)
+                    contextDetailMusicArt.load(
+                        drawableResId = R.drawable.ic_album_black,
+                        builder = requestBuilder
+                    )
                 }
             }
             is PlaybackUiState.CanEdit -> {
@@ -139,6 +143,23 @@ class ContextDetailFragment : DaggerFragment() {
                     contextDetailMusicArt.load(uri = uiState.albumArtUrl, builder = requestBuilder)
                 }
             }
+        }
+    }
+
+    private fun updateRepeatUi(repeat: Repeat) {
+        val repeatImageView = viewBinding.contextDetailRepeat
+
+        when (repeat) {
+            Repeat.NONE,
+            Repeat.ALL -> repeatImageView.setImageResource(R.drawable.ic_repeat_black)
+            Repeat.ONCE -> repeatImageView.setImageResource(R.drawable.ic_repeat_one_black)
+        }
+
+        // Only change selection state if previous state requires change
+        if (repeat == Repeat.NONE && repeatImageView.isSelected) {
+            repeatImageView.isSelected = false
+        } else if ((repeat == Repeat.ALL || repeat == Repeat.ONCE) && !repeatImageView.isSelected) {
+            repeatImageView.isSelected = true
         }
     }
 

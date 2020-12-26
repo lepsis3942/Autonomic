@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class PlaybackContext(
     var id: Long = 0,
     var playlist: Playlist,
-    var repeat: Boolean,
+    var repeat: Repeat,
     var shuffle: Boolean,
     var trigger: Trigger
 ): Parcelable

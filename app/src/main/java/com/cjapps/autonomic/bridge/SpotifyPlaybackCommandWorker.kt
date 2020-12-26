@@ -18,20 +18,23 @@ import com.cjapps.utility.coroutines.ICoroutineDispatcherProvider
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.protocol.client.CallResult
+import com.spotify.protocol.types.Repeat
 import dagger.android.HasAndroidInjector
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import com.cjapps.domain.Repeat as DomainRepeat
+
 
 /**
  * WorkManager worker to initiate playback with the spotify SDK
  * Created by cjgonz on 2020-03-22.
  */
-class SpotifyPlaybackCommandWorker @Inject constructor (
+class SpotifyPlaybackCommandWorker @Inject constructor(
     private val context: Context,
     private val parameters: WorkerParameters
-): CoroutineWorker(context, parameters) {
+) : CoroutineWorker(context, parameters) {
     companion object {
         private const val INPUT_DATA_KEY_PLAYBACK_INFO = "input_data_key_playback_info"
         private const val NOTIFICATION_ID = 288666642
@@ -39,14 +42,22 @@ class SpotifyPlaybackCommandWorker @Inject constructor (
 
         fun buildInputData(playbackInfo: PlaybackInfo, serializer: ISerializer): Data {
             return Data.Builder()
-                .putString(INPUT_DATA_KEY_PLAYBACK_INFO, serializer.toJson(playbackInfo, PlaybackInfo::class))
+                .putString(
+                    INPUT_DATA_KEY_PLAYBACK_INFO,
+                    serializer.toJson(playbackInfo, PlaybackInfo::class)
+                )
                 .build()
         }
     }
 
-    @Inject lateinit var loginRepository: ILoginRepository
-    @Inject lateinit var serializer: ISerializer
-    @Inject lateinit var dispatchers: ICoroutineDispatcherProvider
+    @Inject
+    lateinit var loginRepository: ILoginRepository
+
+    @Inject
+    lateinit var serializer: ISerializer
+
+    @Inject
+    lateinit var dispatchers: ICoroutineDispatcherProvider
 
     init {
         val injector = context.applicationContext as HasAndroidInjector
@@ -81,9 +92,12 @@ class SpotifyPlaybackCommandWorker @Inject constructor (
             appRemote?.playerApi?.apply {
                 playbackInfo.playbackOptions.apply {
                     setShuffle(shuffle)?.awaitCallback()
-                    if (repeatTimes > 0) {
-                        setRepeat(repeatTimes)?.awaitCallback()
+                    val repeat = when (repeat) {
+                        DomainRepeat.NONE -> Repeat.OFF
+                        DomainRepeat.ALL -> Repeat.ALL
+                        DomainRepeat.ONCE -> Repeat.ONE
                     }
+                    setRepeat(repeat)?.awaitCallback()
                 }
 
                 play(playbackInfo.playbackUri)?.awaitCallback()
@@ -96,7 +110,7 @@ class SpotifyPlaybackCommandWorker @Inject constructor (
     }
 
     private suspend fun <T> CallResult<T>.awaitCallback(): T {
-        return suspendCoroutine {  cont ->
+        return suspendCoroutine { cont ->
             this.setResultCallback {
                 cont.resume(it)
             }
@@ -119,11 +133,13 @@ class SpotifyPlaybackCommandWorker @Inject constructor (
 
 
         if (channel == null && Build.VERSION.SDK_INT >= 26) {
-            manager.createNotificationChannel(NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                context.getString(R.string.notification_channel_playback_name),
-                NotificationManager.IMPORTANCE_LOW
-            ))
+            manager.createNotificationChannel(
+                NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    context.getString(R.string.notification_channel_playback_name),
+                    NotificationManager.IMPORTANCE_LOW
+                )
+            )
         }
     }
 }

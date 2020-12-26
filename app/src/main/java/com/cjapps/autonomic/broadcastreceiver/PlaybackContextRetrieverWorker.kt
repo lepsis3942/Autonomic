@@ -46,7 +46,7 @@ class PlaybackContextRetrieverWorker @Inject constructor (
             playbackUri = context.playlist.urn,
             playbackOptions = PlaybackOptions(
                 shuffle = context.shuffle,
-                repeatTimes = 0
+                repeat = context.repeat
             )
         )
 
