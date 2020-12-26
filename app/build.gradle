@@ -86,9 +86,3 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junit_androidx_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_version"
 }
-
-tasks.withType(Test) {
-    testLogging {
-        events "standardOut", "started", "passed", "skipped", "failed"
-    }
-}
