@@ -45,9 +45,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-tasks.withType(Test) {
-    testLogging {
-        events "standardOut", "started", "passed", "skipped", "failed"
-    }
-}
