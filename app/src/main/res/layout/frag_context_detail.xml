@@ -9,7 +9,6 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/context_detail_save_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +17,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp">
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/context_detail_when_connect"
@@ -30,7 +30,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
                 app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.15" />
+                app:layout_constraintVertical_bias="0" />
 
             <ImageView
                 android:id="@+id/context_detail_trigger_hero_image"
@@ -143,6 +143,47 @@
                 app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
                 app:layout_constraintTop_toTopOf="@+id/context_detail_music_art" />
 
+            <TextView
+                android:id="@+id/context_detail_options_title"
+                style="@style/MediumActionText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/context_detail_options_title"
+                app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+                app:layout_constraintStart_toEndOf="@+id/context_detail_start_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/context_detail_music_art" />
+
+            <ImageView
+                android:id="@+id/context_detail_shuffle"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:stateListAnimator="@animator/selectable_image_state_list"
+                android:src="@drawable/ic_shuffle_black"
+                android:contentDescription="@string/context_detail_content_desc_shuffle"
+                app:layout_constraintEnd_toStartOf="@+id/context_detail_repeat"
+                app:layout_constraintStart_toStartOf="@+id/context_detail_start_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/context_detail_options_title" />
+
+            <ImageView
+                android:id="@+id/context_detail_repeat"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:stateListAnimator="@animator/selectable_image_state_list"
+                android:src="@drawable/ic_repeat_black"
+                android:contentDescription="@string/context_detail_content_desc_repeat"
+                app:layout_constraintEnd_toStartOf="@+id/context_detail_end_guideline"
+                app:layout_constraintStart_toEndOf="@+id/context_detail_shuffle"
+                app:layout_constraintTop_toBottomOf="@+id/context_detail_options_title" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/context_detail_start_guideline"
                 android:layout_width="wrap_content"
@@ -173,7 +214,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/context_detail_save_button"
         android:layout_width="0dp"

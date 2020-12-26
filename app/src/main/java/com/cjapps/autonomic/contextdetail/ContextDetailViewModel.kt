@@ -22,18 +22,24 @@ class ContextDetailViewModel @Inject constructor(
     private val playbackUiState = MutableLiveData<PlaybackUiState>()
     private val toolbarUiState = MutableLiveData<ToolbarUiState>()
     private val triggerUiState = MutableLiveData<TriggerUiState>()
+    private val repeatIsSelectedUiState = MutableLiveData<Boolean>()
+    private val shuffleIsSelectedUiState = MutableLiveData<Boolean>()
     private val navEvent = MutableLiveData<Event<NavEvent>>()
     private var isUiDirty = false
     private var isInitialized = false
     private var contextId: Long = 0L
     private var currentlySelectedTrigger: Trigger? = null
     private var currentlySelectedPlayback: Playlist? = null
+    private var repeat: Boolean = false
+    private var shuffle: Boolean = false
 
     val viewState = UiState(
         errorEvent,
         playbackUiState,
         toolbarUiState,
         triggerUiState,
+        repeatIsSelectedUiState,
+        shuffleIsSelectedUiState,
         navEvent
     )
 
@@ -42,10 +48,24 @@ class ContextDetailViewModel @Inject constructor(
             is ContextDetailAction.Init -> initialize(action.contextToEdit)
             is ContextDetailAction.ChooseMusic -> navEvent.value = Event(NavEvent.SetMusic)
             is ContextDetailAction.ChooseTrigger -> navEvent.value = Event(NavEvent.SetTrigger)
-            is ContextDetailAction.DeleteContext -> handleDelete(currentlySelectedPlayback, currentlySelectedTrigger)
+            is ContextDetailAction.DeleteContext -> handleDelete(
+                currentlySelectedPlayback,
+                currentlySelectedTrigger
+            )
             is ContextDetailAction.TriggerUpdated -> handleTriggerUpdate(action.newTrigger)
             is ContextDetailAction.PlaybackUpdated -> handlePlaybackUpdated(action.playlist)
-            is ContextDetailAction.Save -> handleSave(currentlySelectedPlayback, currentlySelectedTrigger)
+            is ContextDetailAction.Save -> handleSave(
+                currentlySelectedPlayback,
+                currentlySelectedTrigger
+            )
+            is ContextDetailAction.RepeatTapped -> {
+                repeat = !repeat
+                repeatIsSelectedUiState.value = repeat
+            }
+            is ContextDetailAction.ShuffleTapped -> {
+                shuffle = !shuffle
+                shuffleIsSelectedUiState.value = shuffle
+            }
         }
     }
 
@@ -64,6 +84,8 @@ class ContextDetailViewModel @Inject constructor(
                 currentlySelectedPlayback = this
                 playbackUiState.value = PlaybackUiState.CanEdit(title, images.firstOrNull()?.url)
             }
+            repeat = contextToEdit.repeat
+            shuffle = contextToEdit.shuffle
             toolbarUi = ToolbarUiState.ShowDelete
         } else {
             triggerUiState.value = TriggerUiState.Unset
@@ -72,6 +94,8 @@ class ContextDetailViewModel @Inject constructor(
         }
         isInitialized = true
         toolbarUiState.value = toolbarUi
+        repeatIsSelectedUiState.value = repeat
+        shuffleIsSelectedUiState.value = shuffle
     }
 
     private fun handleTriggerUpdate(newTrigger: Trigger) {
@@ -128,8 +152,8 @@ class ContextDetailViewModel @Inject constructor(
             id = contextId,
             playlist = playlist,
             trigger = trigger,
-            repeat = false,
-            shuffle = false
+            repeat = repeat,
+            shuffle = shuffle
         )
     }
 }
@@ -139,6 +163,8 @@ sealed class ContextDetailAction {
     object ChooseMusic : ContextDetailAction()
     object ChooseTrigger : ContextDetailAction()
     object DeleteContext : ContextDetailAction()
+    object ShuffleTapped : ContextDetailAction()
+    object RepeatTapped : ContextDetailAction()
     data class TriggerUpdated(val newTrigger: Trigger) : ContextDetailAction()
     data class PlaybackUpdated(val playlist: Playlist) : ContextDetailAction()
     object Save : ContextDetailAction()
@@ -149,6 +175,8 @@ data class UiState(
     val playbackUiState: LiveData<PlaybackUiState>,
     val toolbarUiState: LiveData<ToolbarUiState>,
     val triggerUiState: LiveData<TriggerUiState>,
+    val repeatIsSelectedUiState: LiveData<Boolean>,
+    val shuffleIsSelectedUiState: LiveData<Boolean>,
     val navEvent: LiveData<Event<NavEvent>>
 )
 

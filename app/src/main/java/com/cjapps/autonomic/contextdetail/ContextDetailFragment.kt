@@ -58,6 +58,12 @@ class ContextDetailFragment : DaggerFragment() {
         viewBinding.contextDetailSaveButton.setOnClickListener {
             viewModel.executeAction(ContextDetailAction.Save)
         }
+        viewBinding.contextDetailShuffle.setOnClickListener {
+            viewModel.executeAction(ContextDetailAction.ShuffleTapped)
+        }
+        viewBinding.contextDetailRepeat.setOnClickListener {
+            viewModel.executeAction(ContextDetailAction.RepeatTapped)
+        }
 
         viewModel.viewState.apply {
             errorEvent.observe(viewLifecycleOwner, EventObserver {
@@ -74,6 +80,12 @@ class ContextDetailFragment : DaggerFragment() {
             })
             navEvent.observe(viewLifecycleOwner, EventObserver {
                 navigate(it)
+            })
+            shuffleIsSelectedUiState.observe(viewLifecycleOwner, {
+                viewBinding.contextDetailShuffle.isSelected = it
+            })
+            repeatIsSelectedUiState.observe(viewLifecycleOwner, {
+                viewBinding.contextDetailRepeat.isSelected = it
             })
         }
 
