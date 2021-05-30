@@ -1,6 +1,6 @@
 package com.cjapps.network.model
 
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Created by cjgonz on 2020-01-26.

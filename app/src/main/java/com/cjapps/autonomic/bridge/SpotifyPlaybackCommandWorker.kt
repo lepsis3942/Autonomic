@@ -20,10 +20,11 @@ import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.protocol.client.CallResult
 import com.spotify.protocol.types.Repeat
 import dagger.android.HasAndroidInjector
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeout
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 import com.cjapps.domain.Repeat as DomainRepeat
 
 
@@ -39,6 +40,7 @@ class SpotifyPlaybackCommandWorker @Inject constructor(
         private const val INPUT_DATA_KEY_PLAYBACK_INFO = "input_data_key_playback_info"
         private const val NOTIFICATION_ID = 288666642
         private const val NOTIFICATION_CHANNEL_ID = "channel_playback_control"
+        private const val SPOTIFY_CONNECTION_TIMEOUT = 20000L
 
         fun buildInputData(playbackInfo: PlaybackInfo, serializer: ISerializer): Data {
             return Data.Builder()
@@ -109,10 +111,12 @@ class SpotifyPlaybackCommandWorker @Inject constructor(
         return Result.success()
     }
 
-    private suspend fun <T> CallResult<T>.awaitCallback(): T {
-        return suspendCoroutine { cont ->
-            this.setResultCallback {
-                cont.resume(it)
+    private suspend inline fun <T> CallResult<T>.awaitCallback(): T {
+        return withTimeout(SPOTIFY_CONNECTION_TIMEOUT) {
+            suspendCancellableCoroutine { cont ->
+                setResultCallback {
+                    cont.resume(it)
+                }
             }
         }
     }

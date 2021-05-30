@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "org.jetbrains.kotlin.plugin.parcelize"
 
 android {
     compileSdkVersion compile_sdk_version
@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    def room_version = "2.2.5"
+    def room_version = "2.3.0"
 
     implementation project(':domain')
 

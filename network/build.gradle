@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "org.jetbrains.kotlin.plugin.parcelize"
 
 android {
     compileSdkVersion compile_sdk_version
@@ -52,7 +52,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     api "com.google.dagger:dagger:$dagger_version"
     api "com.google.dagger:dagger-android-support:$dagger_version"
