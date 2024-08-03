@@ -11,6 +11,7 @@ import com.cjapps.autonomic.serialization.ISerializer
 import com.cjapps.persistence.AutonomicDatabaseInteractor
 import com.cjapps.utility.coroutines.ICoroutineDispatcherProvider
 import dagger.android.HasAndroidInjector
+import timber.log.Timber
 import javax.inject.Inject
 
 class PlaybackContextRetrieverWorker @Inject constructor (
@@ -19,10 +20,12 @@ class PlaybackContextRetrieverWorker @Inject constructor (
 ): CoroutineWorker(context, parameters) {
     companion object {
         private const val INPUT_DATA_KEY_MAC_ADDRESS = "input_data_key_mac_address"
+        private const val INPUT_DATA_KEY_BLUETOOTH_ACTION = "input_data_key_bluetooth_action"
 
-        fun buildInputData(macAddress: String): Data {
+        fun buildInputData(macAddress: String, bluetoothAction: String): Data {
             return Data.Builder()
                 .putString(INPUT_DATA_KEY_MAC_ADDRESS, macAddress)
+                .putString(INPUT_DATA_KEY_BLUETOOTH_ACTION, bluetoothAction)
                 .build()
         }
     }
@@ -38,6 +41,10 @@ class PlaybackContextRetrieverWorker @Inject constructor (
 
     override suspend fun doWork(): Result {
         val macAddress = parameters.inputData.getString(INPUT_DATA_KEY_MAC_ADDRESS) ?: return Result.failure()
+        val bluetoothAction = parameters.inputData.getString(INPUT_DATA_KEY_BLUETOOTH_ACTION)
+            ?: return Result.failure()
+
+        Timber.d("Bluetooth action is: $bluetoothAction")
 
         // No matching trigger found, no need to start spotify worker
         val context = db.getContextForMacAddress(macAddress) ?: return Result.failure()
@@ -49,8 +56,13 @@ class PlaybackContextRetrieverWorker @Inject constructor (
                 repeat = context.repeat
             )
         )
-
-        val outputDataForSpotifyWorker = SpotifyPlaybackCommandWorker.buildInputData(playbackInfo, serializer)
+        Timber.d("Retrieving PlaybackContext")
+        val outputDataForSpotifyWorker = SpotifyPlaybackCommandWorker.buildInputData(
+            playbackInfo,
+            macAddress,
+            bluetoothAction,
+            serializer
+        )
         return Result.success(outputDataForSpotifyWorker)
     }
 }

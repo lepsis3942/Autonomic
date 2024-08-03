@@ -15,7 +15,7 @@ import com.cjapps.autonomic.databinding.FragLoginBinding
 import com.cjapps.utility.livedata.EventObserver
 import com.cjapps.utility.viewbinding.viewBindingLifecycle
 import com.google.android.material.snackbar.Snackbar
-import com.spotify.sdk.android.authentication.AuthenticationClient
+import com.spotify.sdk.android.auth.AuthorizationClient
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -65,7 +65,7 @@ class LoginFragment: DaggerFragment(), IHostActivityResultListener {
             }
         })
         loginViewModel.launchAuthenticationLiveData.observe(viewLifecycleOwner, EventObserver {
-            AuthenticationClient.openLoginActivity(activity, SPOTIFY_LOGIN_REQUEST_CODE, it)
+            AuthorizationClient.openLoginActivity(activity, SPOTIFY_LOGIN_REQUEST_CODE, it)
         })
         loginViewModel.errorEventLiveData.observe(viewLifecycleOwner, EventObserver {
             Snackbar.make(viewBinding.loginCoordinator, it, Snackbar.LENGTH_LONG).show()

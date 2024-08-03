@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cjapps.autonomic.R
 import com.cjapps.utility.livedata.Event
-import com.spotify.sdk.android.authentication.AuthenticationClient
-import com.spotify.sdk.android.authentication.AuthenticationRequest
-import com.spotify.sdk.android.authentication.AuthenticationResponse
+import com.spotify.sdk.android.auth.AuthorizationClient
+import com.spotify.sdk.android.auth.AuthorizationRequest
+import com.spotify.sdk.android.auth.AuthorizationResponse
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class LoginViewModel @Inject constructor(
     private val loginRepository: ILoginRepository
 ) : ViewModel() {
     val isLoadingLiveData by lazy { MutableLiveData<Boolean>(false) }
-    val launchAuthenticationLiveData by lazy { MutableLiveData<Event<AuthenticationRequest>>() }
+    val launchAuthenticationLiveData by lazy { MutableLiveData<Event<AuthorizationRequest>>() }
     val errorEventLiveData by lazy { MutableLiveData<Event<String>>() }
     val snackBarEventLiveData by lazy { MutableLiveData<Event<String>>() }
     val loginCompleteEventLiveData by lazy { MutableLiveData<Event<Unit>>() }
@@ -29,9 +29,9 @@ class LoginViewModel @Inject constructor(
     fun loginButtonClicked() {
         isLoadingLiveData.value = true
 
-        val authRequestBuilder = AuthenticationRequest.Builder(
+        val authRequestBuilder = AuthorizationRequest.Builder(
             loginRepository.getClientId(),
-            AuthenticationResponse.Type.CODE,
+            AuthorizationResponse.Type.CODE,
             loginRepository.getRedirectUri()
         )
         authRequestBuilder.setScopes(loginRepository.getAuthorizationScopes())
@@ -39,9 +39,9 @@ class LoginViewModel @Inject constructor(
     }
 
     fun handleAuthenticationResponse(intent: Intent?, resultCode: Int) {
-        val authResponse = AuthenticationClient.getResponse(resultCode, intent)
+        val authResponse = AuthorizationClient.getResponse(resultCode, intent)
         when (authResponse.type) {
-            AuthenticationResponse.Type.CODE -> {
+            AuthorizationResponse.Type.CODE -> {
                 viewModelScope.launch {
                     val successfulLogin = loginRepository.getTokenFromCode(
                         authResponse.code,
@@ -55,7 +55,8 @@ class LoginViewModel @Inject constructor(
                     isLoadingLiveData.value = false
                 }
             }
-            AuthenticationResponse.Type.ERROR -> {
+
+            AuthorizationResponse.Type.ERROR -> {
                 errorEventLiveData.value = Event("Error Authentication Response")
             }
             else -> {
